@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Star, Circle, ChevronDown, Feather, UserCheck, Users, ChevronRight } from 'lucide-react';
+import { Star, Circle, ChevronDown, Feather, UserCheck, Users, ChevronRight, Award, BadgeCheck, Clock3, ShieldCheck } from 'lucide-react';
 import writersData from '../data/topWriters.json';
 
 export default function TopWritersGrid() {
@@ -33,6 +33,13 @@ export default function TopWritersGrid() {
     });
 
   const displayedWriters = filteredWriters.slice(0, limit);
+
+  const getAwardIcon = (award: string) => {
+    if (award.includes('Punctuality')) return Clock3;
+    if (award.includes('Reliability')) return ShieldCheck;
+    if (award.includes('Nine')) return BadgeCheck;
+    return Award;
+  };
 
   const disciplines = [
     'All Disciplines',
@@ -186,7 +193,7 @@ export default function TopWritersGrid() {
               {/* Avatar */}
               <div className="relative shrink-0">
                 <div className="w-16 h-16 rounded-full overflow-hidden border border-slate-100">
-                  <img src={writer.avatar} alt={writer.name} className="w-full h-full object-cover" />
+                  <img src={writer.avatar.replace('https://boffinglobal.com', '')} alt={writer.name} className="w-full h-full object-cover" />
                 </div>
                 <div className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white ${
                   writer.status === 'online' ? 'bg-[#43a047]' : 
@@ -213,15 +220,17 @@ export default function TopWritersGrid() {
                 </div>
 
                 <div className="flex -space-x-2 items-center justify-center sm:justify-start">
-                  {writer.awards.map((award, index) => (
-                    <img 
-                      key={index} 
-                      src={award.src} 
-                      alt={award.alt} 
-                      title={award.alt} 
-                      className="w-8 h-8 rounded-full border-2 border-white shadow-sm hover:scale-110 transition-transform cursor-help bg-white" 
-                    />
-                  ))}
+                  {writer.awards.map((award, index) => {
+                    const AwardIcon = getAwardIcon(award.alt);
+                    return <span
+                      key={index}
+                      title={award.alt}
+                      aria-label={award.alt}
+                      className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-white text-[#0080d1] shadow-sm transition-transform hover:scale-110"
+                    >
+                      <AwardIcon size={16} strokeWidth={2.5} />
+                    </span>;
+                  })}
                 </div>
               </div>
 
