@@ -1,0 +1,1462 @@
+[
+  {
+    "id": 1,
+    "name": "Professorwanya",
+    "href": "/writers/professorwanya.html",
+    "status": "away",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/286/professorwanyax128.webp",
+    "rating": 9.86,
+    "orders": 16501,
+    "discipline": "Psychology",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "chrisM09",
+    "href": "/writers/chrism09.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/103/beveragex128.webp",
+    "rating": 9.88,
+    "orders": 13126,
+    "discipline": "Computer Science",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "emilliano",
+    "href": "/writers/emilliano.html",
+    "status": "online",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/164/derickx128.webp",
+    "rating": 9.94,
+    "orders": 12592,
+    "discipline": "Economics",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Vicscholar",
+    "href": "/writers/vicscholar.html",
+    "status": "online",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/208/passionatewriterx128.webp",
+    "rating": 9.68,
+    "orders": 11954,
+    "discipline": "History",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Nash-topwriter",
+    "href": "/writers/nash-topwriter.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/678/nash-topwriterx128.webp",
+    "rating": 9.88,
+    "orders": 9284,
+    "discipline": "Programming",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Mauriceprowriter",
+    "href": "/writers/mauriceprowriter.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/263/mauriceprowriterx128.webp",
+    "rating": 9.88,
+    "orders": 9207,
+    "discipline": "Nursing",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Jaybest",
+    "href": "/writers/jaybest.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/210/enockayegax128.webp",
+    "rating": 9.16,
+    "orders": 9051,
+    "discipline": "Business Management",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "charl250",
+    "href": "/writers/charl250.html",
+    "status": "online",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/222/arthistorywriter02x128.webp",
+    "rating": 9.98,
+    "orders": 8882,
+    "discipline": "Nursing",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Star1Tutor",
+    "href": "/writers/star1tutor.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/263/mauriceprowriterx128.webp",
+    "rating": 9.94,
+    "orders": 8048,
+    "discipline": "Computer Science",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "TopEssayWriter",
+    "href": "/writers/topessaywriter.html",
+    "status": "online",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/286/professorwanyax128.webp",
+    "rating": 9.92,
+    "orders": 7959,
+    "discipline": "Business Management",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "amenya9",
+    "href": "/writers/amenya9.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/355/ochidomarwax128.webp",
+    "rating": 9.7,
+    "orders": 7081,
+    "discipline": "Mathematics",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "name": "enockayega",
+    "href": "/writers/enockayega.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/210/enockayegax128.webp",
+    "rating": 9.58,
+    "orders": 7078,
+    "discipline": "Psychology",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "name": "FatherNature",
+    "href": "/writers/fathernature.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/376/writerarthurx128.webp",
+    "rating": 9.96,
+    "orders": 6832,
+    "discipline": "Mathematics",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "name": "writermeckler",
+    "href": "/writers/writermeckler.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/416/techpro12x128.webp",
+    "rating": 9.94,
+    "orders": 6040,
+    "discipline": "Programming",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "name": "Merit-writer",
+    "href": "/writers/merit-writer.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/427/feskywriterx128.webp",
+    "rating": 10,
+    "orders": 6031,
+    "discipline": "Programming",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "name": "ochidomarwa",
+    "href": "/writers/ochidomarwa.html",
+    "status": "away",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/355/ochidomarwax128.webp",
+    "rating": 9.7,
+    "orders": 5962,
+    "discipline": "Nursing",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "name": "derick",
+    "href": "/writers/derick.html",
+    "status": "online",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/164/derickx128.webp",
+    "rating": 9.96,
+    "orders": 5079,
+    "discipline": "Psychology",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "name": "CoralineSn",
+    "href": "/writers/coralinesn.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/678/nash-topwriterx128.webp",
+    "rating": 9.52,
+    "orders": 4689,
+    "discipline": "History",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "name": "Elavated",
+    "href": "/writers/elavated.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/103/beveragex128.webp",
+    "rating": 9.66,
+    "orders": 4636,
+    "discipline": "Psychology",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "name": "ProficientZ",
+    "href": "/writers/proficientz.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/164/derickx128.webp",
+    "rating": 9.9,
+    "orders": 4336,
+    "discipline": "History",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "name": "amaninzem",
+    "href": "/writers/amaninzem.html",
+    "status": "online",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/208/passionatewriterx128.webp",
+    "rating": 9.82,
+    "orders": 4336,
+    "discipline": "Economics",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "name": "lopezphdwriter",
+    "href": "/writers/lopezphdwriter.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/210/enockayegax128.webp",
+    "rating": 9.98,
+    "orders": 4033,
+    "discipline": "Business Management",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "name": "edgarprofessional",
+    "href": "/writers/edgarprofessional.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/222/arthistorywriter02x128.webp",
+    "rating": 9.86,
+    "orders": 3876,
+    "discipline": "History",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "name": "ProfessorUltimate",
+    "href": "/writers/professorultimate.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/263/mauriceprowriterx128.webp",
+    "rating": 9.92,
+    "orders": 3732,
+    "discipline": "Mathematics",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "name": "LeardPhD",
+    "href": "/writers/leardphd.html",
+    "status": "away",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/208/passionatewriterx128.webp",
+    "rating": 9.8,
+    "orders": 3721,
+    "discipline": "Economics",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "name": "cathykathy",
+    "href": "/writers/cathykathy.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/286/professorwanyax128.webp",
+    "rating": 9.96,
+    "orders": 3583,
+    "discipline": "History",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "name": "dellugrah",
+    "href": "/writers/dellugrah.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/355/ochidomarwax128.webp",
+    "rating": 9.76,
+    "orders": 3570,
+    "discipline": "Nursing",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "name": "Pseudoname",
+    "href": "/writers/pseudoname.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/376/writerarthurx128.webp",
+    "rating": 9.94,
+    "orders": 3092,
+    "discipline": "Nursing",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "name": "techpro12",
+    "href": "/writers/techpro12.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/416/techpro12x128.webp",
+    "rating": 9.78,
+    "orders": 2884,
+    "discipline": "Computer Science",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "name": "Beverage",
+    "href": "/writers/beverage.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/103/beveragex128.webp",
+    "rating": 9.92,
+    "orders": 2643,
+    "discipline": "Psychology",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "name": "1stEssaySuperStar",
+    "href": "/writers/1stessaysuperstar.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/416/techpro12x128.webp",
+    "rating": 9.88,
+    "orders": 2579,
+    "discipline": "Business Management",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "name": "Nerdywiz",
+    "href": "/writers/nerdywiz.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/427/feskywriterx128.webp",
+    "rating": 9.8,
+    "orders": 2547,
+    "discipline": "Computer Science",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "name": "WriterArthur",
+    "href": "/writers/writerarthur.html",
+    "status": "online",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/376/writerarthurx128.webp",
+    "rating": 9.64,
+    "orders": 2274,
+    "discipline": "Programming",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "name": "arthistorywriter02",
+    "href": "/writers/arthistorywriter02.html",
+    "status": "online",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/222/arthistorywriter02x128.webp",
+    "rating": 9.84,
+    "orders": 2198,
+    "discipline": "History",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 35,
+    "name": "SapphireWriter",
+    "href": "/writers/sapphirewriter.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/678/nash-topwriterx128.webp",
+    "rating": 9.74,
+    "orders": 1931,
+    "discipline": "Economics",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 36,
+    "name": "phddissertationexpert",
+    "href": "/writers/phddissertationexpert.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/103/beveragex128.webp",
+    "rating": 9.86,
+    "orders": 1676,
+    "discipline": "Economics",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 37,
+    "name": "Dezenda",
+    "href": "/writers/dezenda.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/208/passionatewriterx128.webp",
+    "rating": 9.88,
+    "orders": 1594,
+    "discipline": "Mathematics",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 38,
+    "name": "Bestprofessor",
+    "href": "/writers/bestprofessor.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/164/derickx128.webp",
+    "rating": 9.86,
+    "orders": 1448,
+    "discipline": "Computer Science",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 39,
+    "name": "PassionateWriter",
+    "href": "/writers/passionatewriter.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/208/passionatewriterx128.webp",
+    "rating": 9.78,
+    "orders": 1394,
+    "discipline": "Psychology",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      }
+    ]
+  },
+  {
+    "id": 40,
+    "name": "Pedagogist",
+    "href": "/writers/pedagogist.html",
+    "status": "online",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/208/passionatewriterx128.webp",
+    "rating": 9.9,
+    "orders": 1230,
+    "discipline": "Economics",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 41,
+    "name": "Institutionalism",
+    "href": "/writers/institutionalism.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/210/enockayegax128.webp",
+    "rating": 9.5,
+    "orders": 872,
+    "discipline": "History",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 42,
+    "name": "Bengalexpert",
+    "href": "/writers/bengalexpert.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/222/arthistorywriter02x128.webp",
+    "rating": 9.56,
+    "orders": 866,
+    "discipline": "Business Management",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/punctuality_proofed.svg",
+        "alt": "Proven Punctuality"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/reliability_proofed.svg",
+        "alt": "Proven Reliability"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 43,
+    "name": "kenoud8",
+    "href": "/writers/kenoud8.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/263/mauriceprowriterx128.webp",
+    "rating": 9.32,
+    "orders": 507,
+    "discipline": "Nursing",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 44,
+    "name": "Retamosa",
+    "href": "/writers/retamosa.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/286/professorwanyax128.webp",
+    "rating": 9.68,
+    "orders": 454,
+    "discipline": "Psychology",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 45,
+    "name": "jadevela",
+    "href": "/writers/jadevela.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/355/ochidomarwax128.webp",
+    "rating": 9.84,
+    "orders": 449,
+    "discipline": "Mathematics",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 46,
+    "name": "defttouch",
+    "href": "/writers/defttouch.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/376/writerarthurx128.webp",
+    "rating": 9.8,
+    "orders": 448,
+    "discipline": "Programming",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 47,
+    "name": "feskywriter",
+    "href": "/writers/feskywriter.html",
+    "status": "offline",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/427/feskywriterx128.webp",
+    "rating": 9.86,
+    "orders": 387,
+    "discipline": "History",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  },
+  {
+    "id": 48,
+    "name": "EdBusby",
+    "href": "/writers/edbusby.html",
+    "status": "online",
+    "avatar": "https://boffinglobal.com/w3t_avatar/writer/416/techpro12x128.webp",
+    "rating": 9.56,
+    "orders": 256,
+    "discipline": "Business Management",
+    "awards": [
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/triple10.svg",
+        "alt": "Triple Ten"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/nineplus.svg",
+        "alt": "Nine Plus"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/writer_of_month.svg",
+        "alt": "Writer of the month"
+      },
+      {
+        "src": "https://boffinglobal.com/_redesign/assets/img/customer_loyalty.svg",
+        "alt": "Customer Loyalty"
+      }
+    ]
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "name": "BoffinGlobal™ | AI-Free Expert Assignment Help",
+  "description": "Stressed about deadlines? Get 100% human-written assignment help from UK & US native PhDs. Includes free Turnitin reports, structured academic support aligned with university standards, and human-guided research and writing support.",
+  "requestFramePermissions": [
+    "clipboard-read",
+    "clipboard-write"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

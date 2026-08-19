@@ -1,0 +1,143 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+    
+    function isAdmin() {
+      return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+    
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Student Profile Rules
+    match /studentProfiles/{userId} {
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId);
+    }
+
+    // Lead Rules
+    match /leads/{leadId} {
+      allow create: if isValidId(leadId) && isValidLead(request.resource.data);
+      allow get, list: if isAdmin();
+    }
+
+    // Order Rules
+    match /orders/{orderId} {
+      allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || resource.data.email == request.auth.token.email);
+      allow get: if isSignedIn() && (resource.data.userId == request.auth.uid || resource.data.email == request.auth.token.email);
+      allow create: if isValidId(orderId) && isValidOrder(request.resource.data);
+      allow update: if isSignedIn() && (resource.data.userId == request.auth.uid || resource.data.email == request.auth.token.email || isAdmin());
+    }
+
+    // Transaction Rules
+    match /transactions/{transactionId} {
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow get: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Payment Methods Rules
+    match /paymentMethods/{methodId} {
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow get: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid && isValidPaymentMethod(request.resource.data);
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // Referral rewards
+    match /referralEvents/{eventId} {
+      allow list, get: if isSignedIn() && resource.data.referrerId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.referredUserId == request.auth.uid;
+      allow update: if isSignedIn() && resource.data.referrerId == request.auth.uid
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'claimedAt']);
+    }
+
+    // Grammar Checker Limits Rules
+    match /grammarCheckerLimits/{userId} {
+      allow get: if isValidId(userId); // Allow public read for anonymous fingerprint checking if needed, or lock to owner if auth is enforced early. Since anon users can check, we let anyone read a specific ID but they must know the ID (fingerprint).
+      allow create: if isValidId(userId) && isValidGrammarCheckerLimits(request.resource.data);
+      allow update: if isValidId(userId) && isValidGrammarCheckerLimits(request.resource.data)
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['analysesUsed', 'updatedAt']);
+    }
+
+    // Chat Session Rules
+    match /chats/{chatId} {
+      allow create: if isSignedIn() && isValidId(chatId) && isValidChatSession(request.resource.data) && (request.resource.data.userId == request.auth.uid || isAdmin());
+      allow get: if isSignedIn() && isValidId(chatId) && (resource.data.userId == request.auth.uid || isAdmin());
+      allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow update: if isSignedIn() && isValidId(chatId) && (resource.data.userId == request.auth.uid || isAdmin()) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt']) && isValidChatSession(request.resource.data);
+      
+      match /messages/{messageId} {
+        allow create: if isSignedIn() && isValidId(messageId) && isValidChatMessage(request.resource.data) && request.resource.data.chatId == chatId && (request.resource.data.senderId == request.auth.uid || isAdmin());
+        allow get, list: if isSignedIn() && isValidId(messageId) && (get(/databases/$(database)/documents/chats/$(chatId)).data.userId == request.auth.uid || isAdmin());
+      }
+    }
+
+    // Validation Blueprints
+    function isValidLead(data) {
+      return data.email is string && data.email.matches('^[^@]+@[^@]+\\.[^@]+$') && data.email.size() <= 255
+          && data.source is string && data.source.size() > 0 && data.source.size() <= 100
+          && data.createdAt is timestamp;
+    }
+
+    function isValidStudentProfile(data) {
+      return data.userId is string && data.userId.size() > 0 
+          && data.email is string && data.email.size() > 0
+          && data.emailVerified is bool;
+    }
+
+    function isValidOrder(data) {
+      return (data.userId is string || data.userId == null)
+          && data.fullName is string && data.fullName.size() > 0 && data.fullName.size() <= 100
+          && data.email is string && data.email.matches('^[^@]+@[^@]+\\.[^@]+$') && data.email.size() <= 255
+          && data.taskType is string && data.taskType.size() > 0
+          && data.status in ['draft', 'pending', 'paid', 'completed']
+          && data.createdAt is timestamp;
+    }
+
+    function isValidGrammarCheckerLimits(data) {
+      return data.userId is string && data.userId.size() > 0
+          && data.analysesUsed is number
+          && data.createdAt is string
+          && data.updatedAt is string;
+    }
+
+    function isValidPaymentMethod(data) {
+      return data.userId is string && data.userId.size() > 0
+          && data.last4 is string && data.last4.size() == 4
+          && data.brand is string && data.brand.size() > 0
+          && data.isPrimary is bool;
+    }
+
+    function isValidChatSession(data) {
+      return data.userId is string && data.userId.size() > 0
+          && data.status in ['active', 'closed']
+          && data.createdAt is string
+          && data.updatedAt is string;
+    }
+
+    function isValidChatMessage(data) {
+      return data.chatId is string && data.chatId.size() > 0
+          && data.senderId is string && data.senderId.size() > 0
+          && data.senderRole in ['user', 'support', 'system']
+          && data.content is string && data.content.size() > 0 && data.content.size() <= 4096
+          && data.createdAt is string;
+    }
+  }
+}

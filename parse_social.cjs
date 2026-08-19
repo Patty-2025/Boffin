@@ -1,0 +1,68 @@
+const fs = require('fs');
+
+const rawHtml = `<section class="bg-slate-50 relative z-0 overflow-hidden" style="padding: 32px 0; background-color: #f1f5f9;">
+  <div class="max-w-[1150px] mx-auto px-6 relative z-10 animate-appear-0">
+    <h2 class="text-center text-[22px] md:text-[31px] font-bold text-[#424242] mb-4">Follow BoffinGlobal on social media</h2>
+    <p class="regular text-center text-[#5e5e5e] mb-8">Learn more about our writing service and share your ideas with us on social media:</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-4 gap-4">
+      <div class="js--about-us flex text-[#424242] cursor-pointer hover:no-underline group hover:text-[#0080d1] hover:bg-[#e0f0f9] hover:border-[#dde6ef] hover:shadow-[0_0_0_3px_#E5F2FA] items-center gap-2 p-4 bg-white rounded-[12px] border border-solid border-[#dde6ef] transition-colors">
+        <div style="background-color: #F1F5F9;" class="flex shrink-0 items-center justify-center rounded-full w-[48px] h-[48px] group-hover:bg-[#dde6ef] transition">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 16.5L16.5 12L9.5 7.5V16.5ZM12 22C10.6167 22 9.31667 21.7375 8.1 21.2125C6.88333 20.6875 5.825 19.975 4.925 19.075C4.025 18.175 3.3125 17.1167 2.7875 15.9C2.2625 14.6833 2 13.3833 2 12C2 10.6167 2.2625 9.31667 2.7875 8.1C3.3125 6.88333 4.025 5.825 4.925 4.925C5.825 4.025 6.88333 3.3125 8.1 2.7875C9.31667 2.2625 10.6167 2 12 2C13.3833 2 14.6833 2.2625 15.9 2.7875C17.1167 3.3125 18.175 4.025 19.075 4.925C19.975 5.825 20.6875 6.88333 21.2125 8.1C21.7375 9.31667 22 10.6167 22 12C22 13.3833 21.7375 14.6833 21.2125 15.9C20.6875 17.1167 19.975 18.175 19.075 19.075C18.175 19.975 17.1167 20.6875 15.9 21.2125C14.6833 21.7375 13.3833 22 12 22ZM12 20C14.2333 20 16.125 19.225 17.675 17.675C19.225 16.125 20 14.2333 20 12C20 9.76667 19.225 7.875 17.675 6.325C16.125 4.775 14.2333 4 12 4C9.76667 4 7.875 4.775 6.325 6.325C4.775 7.875 4 9.76667 4 12C4 14.2333 4.775 16.125 6.325 17.675C7.875 19.225 9.76667 20 12 20Z" fill="#0050B5"></path></svg>
+        </div>
+        <div class="grow">
+          <div class="font-lato text-[#424242] group-hover:text-[#0080d1] font-bold text-[18px]">Watch our story</div>
+        </div>
+      </div>
+      <a class="flex text-[#424242] hover:no-underline group hover:text-[#0080d1] hover:bg-[#e0f0f9] hover:border-[#dde6ef] hover:shadow-[0_0_0_3px_#E5F2FA] items-center gap-2 p-4 bg-white rounded-[12px] border border-solid border-[#dde6ef] transition-colors" href="https://www.instagram.com/boffinglobal_official/" target="_blank" rel="noopener noreferrer">
+        <div style="background-color: #FCF5FF;" class="flex shrink-0 items-center justify-center rounded-full w-[48px] h-[48px] group-hover:bg-[#dde6ef] transition">
+          <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.55273 0.072C8.83236 0.0130909 9.24036 0 12.5 0C15.7596 0 16.1676 0.0141818 17.4462 0.072C18.7247 0.129818 19.5975 0.333818 20.3611 0.629455C21.1607 0.931636 21.8862 1.404 22.4862 2.01491C23.0971 2.61382 23.5684 3.33818 23.8695 4.13891C24.1662 4.90255 24.3691 5.77527 24.428 7.05164C24.4869 8.33346 24.5 8.74146 24.5 12C24.5 15.2596 24.4858 15.6676 24.428 16.9473C24.3702 18.2236 24.1662 19.0964 23.8695 19.86C23.5684 20.6608 23.0963 21.3864 22.4862 21.9862C21.8862 22.5971 21.1607 23.0684 20.3611 23.3695C19.5975 23.6662 18.7247 23.8691 17.4484 23.928C16.1676 23.9869 15.7596 24 12.5 24C9.24036 24 8.83236 23.9858 7.55273 23.928C6.27636 23.8702 5.40364 23.6662 4.64 23.3695C3.83919 23.0683 3.11362 22.5963 2.51382 21.9862C1.90332 21.3869 1.43089 20.6617 1.12945 19.8611C0.833818 19.0975 0.630909 18.2247 0.572 16.9484C0.513091 15.6665 0.5 15.2585 0.5 12C0.5 8.74036 0.514182 8.33236 0.572 7.05382C0.629818 5.77527 0.833818 4.90255 1.12945 4.13891C1.43133 3.33827 1.90413 2.61307 2.51491 2.01382C3.11386 1.40346 3.8387 0.931029 4.63891 0.629455C5.40255 0.333818 6.27527 0.130909 7.55164 0.072H7.55273ZM17.3491 2.232C16.0836 2.17418 15.704 2.16218 12.5 2.16218C9.296 2.16218 8.91636 2.17418 7.65091 2.232C6.48036 2.28545 5.84545 2.48073 5.42218 2.64545C4.86255 2.86364 4.46218 3.12218 4.04218 3.54218C3.64405 3.92951 3.33765 4.40104 3.14545 4.92218C2.98073 5.34545 2.78545 5.98036 2.732 7.15091C2.67418 8.41636 2.66218 8.796 2.66218 12C2.66218 15.204 2.67418 15.5836 2.732 16.8491C2.78545 18.0196 2.98073 18.6545 3.14545 19.0778C3.33745 19.5982 3.644 20.0705 4.04218 20.4578C4.42945 20.856 4.90182 21.1625 5.42218 21.3545C5.84545 21.5193 6.48036 21.7145 7.65091 21.768C8.91636 21.8258 9.29491 21.8378 12.5 21.8378C15.7051 21.8378 16.0836 21.8258 17.3491 21.768C18.5196 21.7145 19.1545 21.5193 19.5778 21.3545C20.1375 21.1364 20.5378 20.8778 20.9578 20.4578C21.356 20.0705 21.6625 19.5982 21.8545 19.0778C22.0193 18.6545 22.2145 18.0196 22.268 16.8491C22.3258 15.5836 22.3378 15.204 22.3378 12C22.3378 8.796 22.3258 8.41636 22.268 7.15091C22.2145 5.98036 22.0193 5.34545 21.8545 4.92218C21.6364 4.36255 21.3778 3.96218 20.9578 3.54218C20.5705 3.14408 20.0989 2.83768 19.5778 2.64545C19.1545 2.48073 18.5196 2.28545 17.3491 2.232ZM10.9673 15.6993C11.8233 16.0556 12.7764 16.1037 13.6639 15.8353C14.5514 15.567 15.3182 14.9988 15.8334 14.2279C16.3485 13.457 16.5801 12.5311 16.4884 11.6085C16.3968 10.6858 15.9876 9.82361 15.3309 9.16909C14.9123 8.7507 14.406 8.43034 13.8487 8.23107C13.2914 8.0318 12.6968 7.95858 12.1078 8.01667C11.5188 8.07477 10.95 8.26274 10.4423 8.56705C9.93468 8.87136 9.50081 9.28445 9.17197 9.77657C8.84312 10.2687 8.62748 10.8276 8.54056 11.413C8.45365 11.9985 8.49762 12.596 8.66932 13.1624C8.84101 13.7288 9.13616 14.2501 9.53351 14.6888C9.93087 15.1275 10.4205 15.4726 10.9673 15.6993ZM8.13855 7.63855C8.7113 7.06579 9.39126 6.61146 10.1396 6.30149C10.8879 5.99151 11.69 5.83197 12.5 5.83197C13.31 5.83197 14.1121 5.99151 14.8604 6.30149C15.6087 6.61146 16.2887 7.06579 16.8615 7.63855C17.4342 8.2113 17.8885 8.89126 18.1985 9.6396C18.5085 10.3879 18.668 11.19 18.668 12C18.668 12.81 18.5085 13.6121 18.1985 14.3604C17.8885 15.1087 17.4342 15.7887 16.8615 16.3615C15.7047 17.5182 14.1359 18.168 12.5 18.168C10.8641 18.168 9.29528 17.5182 8.13855 16.3615C6.98182 15.2047 6.33197 13.6359 6.33197 12C6.33197 10.3641 6.98182 8.79528 8.13855 7.63855ZM20.036 6.75055C20.1779 6.61666 20.2916 6.45565 20.3701 6.27706C20.4487 6.09847 20.4907 5.90593 20.4935 5.71083C20.4964 5.51574 20.4601 5.32205 20.3867 5.14125C20.3134 4.96044 20.2045 4.79619 20.0665 4.65822C19.9285 4.52026 19.7643 4.41137 19.5835 4.33802C19.4027 4.26467 19.209 4.22834 19.0139 4.23118C18.8188 4.23403 18.6263 4.27599 18.4477 4.35458C18.2691 4.43317 18.1081 4.54679 17.9742 4.68873C17.7138 4.96476 17.5712 5.33141 17.5768 5.71083C17.5823 6.09026 17.7355 6.4526 18.0038 6.72092C18.2721 6.98924 18.6345 7.14243 19.0139 7.14796C19.3933 7.15349 19.76 7.01093 20.036 6.75055Z" fill="#9B00D1"></path></svg>
+        </div>
+        <div class="grow">
+          <div class="font-lato text-[#424242] group-hover:text-[#0080d1] font-bold text-[18px]">Instagram</div>
+          <span class="text-[14px] text-[#7b7b7b] group-hover:text-[#5c80ab]">2.5K+ followers</span>
+        </div>
+        <svg class="shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6.4 18L5 16.6L14.6 7H6V5H18V17H16V8.4L6.4 18Z" fill="currentColor"></path>
+        </svg>
+      </a>
+      <a class="flex text-[#424242] hover:no-underline group hover:text-[#0080d1] hover:bg-[#e0f0f9] hover:border-[#dde6ef] hover:shadow-[0_0_0_3px_#E5F2FA] items-center gap-2 p-4 bg-white rounded-[12px] border border-solid border-[#dde6ef] transition-colors" href="https://www.youtube.com/@BoffinGlobal" target="_blank" rel="noopener noreferrer">
+        <div style="background-color: #FFF5F5;" class="flex shrink-0 items-center justify-center rounded-full w-[48px] h-[48px] group-hover:bg-[#dde6ef] transition">
+          <svg width="24" height="17" viewBox="0 0 24 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.6 12.0365L15.828 8.42553L9.6 4.81459V12.0365ZM23.472 2.61192C23.628 3.17763 23.736 3.93593 23.808 4.89884C23.892 5.86176 23.928 6.69228 23.928 7.41447L24 8.42553C24 11.0615 23.808 12.9994 23.472 14.2392C23.172 15.3224 22.476 16.0205 21.396 16.3215C20.832 16.4779 19.8 16.5863 18.216 16.6585C16.656 16.7427 15.228 16.7788 13.908 16.7788L12 16.8511C6.972 16.8511 3.84 16.6585 2.604 16.3215C1.524 16.0205 0.828 15.3224 0.528 14.2392C0.372 13.6734 0.264 12.9151 0.192 11.9522C0.108 10.9893 0.0719999 10.1588 0.0719999 9.4366L0 8.42553C0 5.78954 0.192 3.85167 0.528 2.61192C0.828 1.52863 1.524 0.830517 2.604 0.529605C3.168 0.373131 4.2 0.264802 5.784 0.192583C7.344 0.108328 8.772 0.0722188 10.092 0.0722188L12 0C17.028 0 20.16 0.192584 21.396 0.529605C22.476 0.830517 23.172 1.52863 23.472 2.61192Z" fill="#D10000"></path></svg>
+        </div>
+        <div class="grow">
+          <div class="font-lato text-[#424242] group-hover:text-[#0080d1] font-bold text-[18px]">YouTube</div>
+          <span class="text-[14px] text-[#7b7b7b] group-hover:text-[#5c80ab]">1.5K+ followers</span>
+        </div>
+        <svg class="shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6.4 18L5 16.6L14.6 7H6V5H18V17H16V8.4L6.4 18Z" fill="currentColor"></path>
+        </svg>
+      </a>
+      <a class="flex text-[#424242] hover:no-underline group hover:text-[#0080d1] hover:bg-[#e0f0f9] hover:border-[#dde6ef] hover:shadow-[0_0_0_3px_#E5F2FA] items-center gap-2 p-4 bg-white rounded-[12px] border border-solid border-[#dde6ef] transition-colors" href="https://www.tiktok.com/@boffinglobal.com" target="_blank" rel="noopener noreferrer">
+        <div style="background-color: #F1F5F9;" class="flex shrink-0 items-center justify-center rounded-full w-[48px] h-[48px] group-hover:bg-[#dde6ef] transition">
+          <svg width="21" height="24" viewBox="0 0 21 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.8214 5.56219C17.6695 5.4837 17.5217 5.39765 17.3784 5.30437C16.9618 5.02896 16.5799 4.70445 16.2408 4.33781C15.3923 3.36703 15.0754 2.38219 14.9587 1.69266H14.9634C14.8659 1.12031 14.9062 0.75 14.9123 0.75H11.0479V15.6928C11.0479 15.8934 11.0479 16.0917 11.0395 16.2877C11.0395 16.312 11.0372 16.3345 11.0358 16.3608C11.0358 16.3716 11.0358 16.3828 11.0334 16.3941C11.0334 16.3969 11.0334 16.3997 11.0334 16.4025C10.9927 16.9386 10.8208 17.4566 10.5329 17.9107C10.2451 18.3648 9.84998 18.7413 9.38247 19.0069C8.89523 19.2841 8.34414 19.4295 7.78357 19.4287C5.9831 19.4287 4.52388 17.9606 4.52388 16.1475C4.52388 14.3344 5.9831 12.8662 7.78357 12.8662C8.12439 12.8659 8.46311 12.9196 8.78716 13.0252L8.79185 9.09047C7.80811 8.9634 6.80872 9.04158 5.85671 9.32008C4.9047 9.59858 4.02074 10.0714 3.2606 10.7086C2.59454 11.2873 2.03457 11.9778 1.60591 12.7491C1.44279 13.0303 0.827318 14.1605 0.752787 15.9947C0.705912 17.0358 1.01857 18.1144 1.16763 18.5602V18.5695C1.26138 18.832 1.62466 19.7278 2.21669 20.483C2.69409 21.0887 3.25811 21.6208 3.8906 22.0622V22.0528L3.89997 22.0622C5.77076 23.3334 7.84497 23.25 7.84497 23.25C8.20404 23.2355 9.40685 23.25 10.7728 22.6027C12.2878 21.885 13.1503 20.8158 13.1503 20.8158C13.7013 20.1769 14.1394 19.4488 14.4459 18.6628C14.7956 17.7436 14.9123 16.6411 14.9123 16.2005V8.27297C14.9592 8.30109 15.5836 8.71406 15.5836 8.71406C15.5836 8.71406 16.4831 9.29062 17.8865 9.66609C18.8934 9.93328 20.25 9.98953 20.25 9.98953V6.15328C19.7747 6.20484 18.8095 6.05484 17.8214 5.56219Z" fill="#424242"></path></svg>
+        </div>
+        <div class="grow">
+          <div class="font-lato text-[#424242] group-hover:text-[#0080d1] font-bold text-[18px]">TikTok</div>
+          <span class="text-[14px] text-[#7b7b7b] group-hover:text-[#5c80ab]">1.3K+ followers</span>
+        </div>
+        <svg class="shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6.4 18L5 16.6L14.6 7H6V5H18V17H16V8.4L6.4 18Z" fill="currentColor"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>`;
+
+let reactCode = rawHtml
+  .replace(/class=/g, 'className=')
+  .replace(/fill-rule/g, 'fillRule')
+  .replace(/clip-rule/g, 'clipRule')
+  .replace(/clip-path/g, 'clipPath')
+  .replace(/stroke-width/g, 'strokeWidth')
+  .replace(/stroke-linecap/g, 'strokeLinecap')
+  .replace(/stroke-linejoin/g, 'strokeLinejoin');
+
+const componentStr = `import React from 'react';\n\nexport const SocialFollowings = () => {\n  return (\n    ${reactCode}\n  );\n};\n`;
+
+fs.writeFileSync('src/components/SocialFollowings.tsx', componentStr);
+console.log('Successfully wrote src/components/SocialFollowings.tsx');

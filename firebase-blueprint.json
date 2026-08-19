@@ -1,0 +1,165 @@
+{
+  "entities": {
+    "lead": {
+      "title": "Lead",
+      "description": "Captured email lead from subscription forms",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email" },
+        "source": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "source", "createdAt"]
+    },
+    "order": {
+      "title": "Assignment Order",
+      "description": "An order created from the cost calculator",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "UID of the user who placed the order (optional if guest)" },
+        "fullName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "taskType": { "type": "string" },
+        "subject": { "type": "string" },
+        "level": { "type": "string" },
+        "pages": { "type": "number" },
+        "deadline": { "type": "string", "format": "date-time" },
+        "additionalInstructions": { "type": "string" },
+        "totalCost": { "type": "number" },
+        "discountCode": { "type": "string" },
+        "status": { "type": "string", "enum": ["draft", "pending", "paid", "completed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["fullName", "email", "taskType", "status", "createdAt"]
+    },
+    "studentProfile": {
+      "title": "Student Profile",
+      "description": "Extends auth user and tracks portal progress",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "emailVerified": { "type": "boolean" },
+        "name": { "type": "string" },
+        "activeModules": { "type": "array", "description": "List of active portal modules" }
+      },
+      "required": ["userId", "email", "emailVerified"]
+    },
+    "grammarCheckerLimits": {
+      "title": "Grammar Checker Limits",
+      "description": "Tracks analysis attempts to enforce the paywall.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "UID of the user or a device-based fingerprint identifier for anon users" },
+        "analysesUsed": { "type": "number", "description": "Counter for number of times analyzeText was called" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "analysesUsed", "createdAt", "updatedAt"]
+    },
+    "transaction": {
+      "title": "Finance Transaction",
+      "description": "Ledger entry for payments",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "orderId": { "type": "string" },
+        "transactionId": { "type": "string" },
+        "amount": { "type": "number" },
+        "paymentType": { "type": "string" },
+        "source": { "type": "string" },
+        "description": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "amount", "transactionId", "createdAt"]
+    },
+    "paymentMethod": {
+      "title": "Payment Method",
+      "description": "Secure reference to a stored card",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "cardHolder": { "type": "string" },
+        "last4": { "type": "string" },
+        "brand": { "type": "string" },
+        "expiry": { "type": "string" },
+        "isPrimary": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "last4", "brand", "createdAt"]
+    },
+    "admin": {
+"title": "Admin",
+"description": "System administrator",
+"type": "object",
+"properties": {
+"userId": { "type": "string" },
+"email": { "type": "string", "format": "email" }
+},
+"required": ["userId", "email"]
+},
+"chatSession": {
+"title": "Chat Session",
+"description": "A live chat session between a user and support",
+"type": "object",
+"properties": {
+"userId": { "type": "string" },
+"status": { "type": "string", "enum": ["active", "closed"] },
+"createdAt": { "type": "string", "format": "date-time" },
+"updatedAt": { "type": "string", "format": "date-time" }
+},
+"required": ["userId", "status", "createdAt", "updatedAt"]
+},
+"chatMessage": {
+"title": "Chat Message",
+"description": "A single message in a chat session",
+"type": "object",
+"properties": {
+"chatId": { "type": "string" },
+"senderId": { "type": "string" },
+"senderRole": { "type": "string", "enum": ["user", "support", "system"] },
+"content": { "type": "string" },
+"createdAt": { "type": "string", "format": "date-time" }
+},
+"required": ["chatId", "senderId", "senderRole", "content", "createdAt"]
+}
+},
+"firestore": {
+"/leads/{leadId}": {
+"schema": "lead",
+"description": "Collection of captured email leads"
+},
+"/orders/{orderId}": {
+"schema": "order",
+"description": "Collection of assignment orders"
+},
+"/studentProfiles/{userId}": {
+"schema": "studentProfile",
+"description": "User profile extension for portal access"
+},
+"/grammarCheckerLimits/{userId}": {
+"schema": "grammarCheckerLimits",
+"description": "Collection tracking user grammar checks, bound by userId."
+},
+"/transactions/{transactionId}": {
+"schema": "transaction",
+"description": "Payment history ledger"
+},
+"/paymentMethods/{methodId}": {
+"schema": "paymentMethod",
+"description": "Stored user payment methods"
+},
+"/admins/{userId}": {
+"schema": "admin",
+"description": "System administrators"
+},
+"/chats/{chatId}": {
+"schema": "chatSession",
+"description": "Chat sessions"
+},
+"/chats/{chatId}/messages/{messageId}": {
+"schema": "chatMessage",
+"description": "Messages in a chat session"
+}
+}
+}

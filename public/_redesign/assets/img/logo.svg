@@ -1,0 +1,17 @@
+<svg width="210" height="36" viewBox="0 0 210 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_boffin_logo)">
+<path d="M24.0012 22.0105C19.6397 23.6935 0 36 0 36H34.3927C30.497 25.7734 46 20 46 20C46 20 28.2809 20.3589 24.0012 22.0105Z" fill="#F89C1C"/>
+<path d="M14.1466 15.5C7.08156 18.9635 0 35.9808 0 36H33.7808C26.2723 19.5 43.9556 11 43.9556 11C43.9556 11 21.1692 12.0571 14.1466 15.5Z" fill="#E4666B"/>
+<path d="M15.0976 7.40862C7.95038 12.396 0 35.9723 0 36H34.1737C23.8614 19.1963 40.8889 0 40.8889 0C40.8889 0 22.2018 2.45077 15.0976 7.40862Z" fill="url(#paint0_linear_boffin)"/>
+</g>
+<text x="52" y="24" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="22" letter-spacing="-0.5px" fill="#1A2E44">Boffin<tspan fill="#0080D1">Global</tspan><tspan font-size="10" font-weight="700" dy="5" fill="#0080D1">TM</tspan></text>
+<defs>
+<linearGradient id="paint0_linear_boffin" x1="24.249" y1="37.3839" x2="24.249" y2="-1.21255" gradientUnits="userSpaceOnUse">
+<stop stop-color="#0FB6E9"/>
+<stop offset="1" stop-color="#57BFA0"/>
+</linearGradient>
+<clipPath id="clip0_boffin_logo">
+<rect width="46" height="36" fill="white" transform="matrix(1 0 0 -1 0 36)"/>
+</clipPath>
+</defs>
+</svg>
