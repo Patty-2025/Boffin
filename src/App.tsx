@@ -99,6 +99,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminLayout from './components/AdminLayout';
 import AdminRoute from './components/AdminRoute';
 import AdminChat from './pages/AdminChat';
+import AdminSitemaps from './pages/AdminSitemaps';
 
 import { AuthProvider } from './context/AuthContext';
 
@@ -125,6 +126,7 @@ function AppContent() {
           <Route path="/order-placed" element={<OrderPlaced />} />
           <Route path="/admin/chat" element={<AdminRoute><AdminLayout><AdminChat /></AdminLayout></AdminRoute>} />
           <Route path="/admin/dashboard" element={<AdminRoute><AdminLayout><AdminDashboard /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/sitemaps" element={<AdminRoute><AdminLayout><AdminSitemaps /></AdminLayout></AdminRoute>} />
           <Route path="/login" element={<Login />} />
           <Route path="/log-in.html" element={<Login />} />
           <Route path="/signup" element={<Registration />} />

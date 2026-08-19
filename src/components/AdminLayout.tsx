@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LayoutDashboard, MessageCircle, LogOut, User, ChevronLeft, ChevronRight } from 'lucide-react';
+import { LayoutDashboard, MessageCircle, LogOut, User, ChevronLeft, ChevronRight, Map } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../lib/firebase';
@@ -17,6 +17,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const navItems = [
     { name: 'Dashboard', icon: LayoutDashboard, path: '/admin/dashboard' },
     { name: 'Live Chat', icon: MessageCircle, path: '/admin/chat' },
+    { name: 'Sitemaps', icon: Map, path: '/admin/sitemaps' },
   ];
 
   return (

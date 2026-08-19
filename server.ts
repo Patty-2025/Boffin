@@ -7,6 +7,7 @@ import { calculatePrice } from './src/services/pricing';
 import { grammarCheck } from './src/services/grammarService';
 
 const currentDirname = typeof __dirname !== 'undefined' ? __dirname : process.cwd();
+const SITE_URL = 'https://boffinglobalgroup.com';
 
 async function startServer() {
   const app = express();
@@ -245,39 +246,42 @@ Allow: /
 Disallow: /portal/
 Disallow: /dashboard
 
-  Sitemap: https://boffinglobalgroup.com/sitemap.xml`);
+Sitemap: ${SITE_URL}/sitemap.xml`);
   });
 
   app.get('/sitemap.xml', (req, res) => {
-    // Array of all main paths
-    const pages = [
-      '/', '/experts', '/reviews', '/samples', '/about-us', '/hire', '/contact-us', '/faqs', '/how-it-works', '/offers',
-      // Services
-      '/homework', '/assessment-help', '/do-my-homework', '/pay-someone-to-do-my-homework', '/online-exam-help',
-      '/case-study-help', '/term-paper-help', '/powerpoint-help', '/thesis-help', '/coursework',
-      '/essay-writing-service', '/essay-editing-service', '/mba-essay-writing-service', '/essay-help',
-      '/research-proposal-service', '/research-paper-service', '/ghost-writer-service', '/dissertation-help-service',
-      '/programming-help-service', '/online-class-help-service',
-      // Tools
-      '/plagiarism-checker', '/essay-typer', '/paraphrasing-tool', '/grammar-checker', '/essay-checker',
-      '/factoring-calculator', '/word-counter', '/citation-generator', '/pdf-summarizer', '/other-tools',
-      '/apa-citation', '/chicago-citation', '/harvard-citation', '/mla-citation', '/vancouver-citation', '/oxford-citation',
-      // Countries
-      '/ca', '/au', '/my', '/sg', '/hk', '/in', '/mv', '/uk', '/ie', '/nz', '/se', '/ae', '/sa', '/gh', '/qa', '/za', '/kw', '/om', '/me'
-    ];
-    
-    const xml = `<?xml version="1.0" encoding="UTF-8"?>
+    const sitemapPath = path.join(process.cwd(), 'public', 'sitemap.xml');
+    res.sendFile(sitemapPath, (error) => {
+      if (error) {
+        console.error('Unable to serve sitemap.xml from public folder:', error);
+        const pages = [
+          '/', '/experts', '/reviews', '/samples', '/about-us', '/hire', '/contact-us', '/faqs', '/how-it-works', '/offers',
+          '/homework', '/assessment-help', '/do-my-homework', '/pay-someone-to-do-my-homework', '/online-exam-help',
+          '/case-study-help', '/term-paper-help', '/powerpoint-help', '/thesis-help', '/coursework',
+          '/essay-writing-service', '/essay-editing-service', '/mba-essay-writing-service', '/essay-help',
+          '/research-proposal-service', '/research-paper-service', '/ghost-writer-service', '/dissertation-help-service',
+          '/programming-help-service', '/online-class-help-service',
+          '/plagiarism-checker', '/essay-typer', '/paraphrasing-tool', '/grammar-checker', '/essay-checker',
+          '/factoring-calculator', '/word-counter', '/citation-generator', '/pdf-summarizer', '/other-tools',
+          '/apa-citation', '/chicago-citation', '/harvard-citation', '/mla-citation', '/vancouver-citation', '/oxford-citation',
+          '/ca', '/au', '/my', '/sg', '/hk', '/in', '/mv', '/uk', '/ie', '/nz', '/se', '/ae', '/sa', '/gh', '/qa', '/za', '/kw', '/om', '/me'
+        ];
+
+        const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   ${pages.map(page => `
   <url>
-    <loc>https://boffinglobalgroup.com${page}</loc>
+    <loc>${SITE_URL}${page}</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>${page === '/' ? '1.0' : '0.8'}</priority>
   </url>`).join('')}
 </urlset>`;
-    res.set('Content-Type', 'application/xml');
-    res.send(xml);
+
+        res.type('application/xml');
+        res.send(xml);
+      }
+    });
   });
 
   app.post('/api/sync-to-zoho', async (req, res) => {
