@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth, db, googleProvider, appleProvider, facebookProvider } from '../lib/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { auth, googleProvider, appleProvider, facebookProvider } from '../lib/firebase';
 import { signInWithPopup } from 'firebase/auth';
 import TermsModal from './TermsModal';
 
@@ -87,24 +86,8 @@ export default function OrderFormWidget() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    try {
-      await addDoc(collection(db, 'orders'), {
-        email,
-        wordsQty,
-        pagesCount,
-        deadline,
-        policyAgree,
-        marketingAgree,
-        status: 'pending',
-        createdAt: serverTimestamp()
-      });
-    } catch (err) {
-      console.error('Error placing order:', err);
-    } finally {
-      setIsSubmitting(false);
-      navigate(`/registration.html?email=${encodeURIComponent(email)}`);
-    }
+    navigate(`/registration.html?email=${encodeURIComponent(email)}&words=${wordsQty}&deadline=${encodeURIComponent(deadline)}`);
+    setIsSubmitting(false);
   };
 
   return (
