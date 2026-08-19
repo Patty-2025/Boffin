@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import { HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
@@ -250,6 +251,7 @@ export default function App() {
         <AuthProvider>
           <ScrollToHashElement />
           <AppContent />
+          <Analytics />
         </AuthProvider>
       </Router>
     </HelmetProvider>
