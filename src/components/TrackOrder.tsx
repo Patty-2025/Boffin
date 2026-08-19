@@ -21,6 +21,8 @@ interface TrackableOrder {
   writerName?: string | null;
   selectedWriterId?: string | number | null;
   selectedWriterName?: string | null;
+  isDraft?: boolean;
+  checkoutStep?: number;
   createdAt?: { toDate?: () => Date } | string | Date | null;
 }
 
@@ -131,6 +133,7 @@ export default function TrackOrder() {
             <div className="py-6"><div className="mb-2 flex justify-between text-sm font-bold text-slate-700"><span>Order progress</span><span className="text-[#0080d1]">{getProgress(activeStatus)}%</span></div><div className="h-2 bg-slate-200"><div className="h-full bg-[#13bdb0] transition-all" style={{ width: `${getProgress(activeStatus)}%` }} /></div></div>
             <div className="space-y-3">{STATUS_STEPS.map((step, index) => { const completed = index <= activeStepIndex; const current = index === activeStepIndex; return <div key={step.status} className={`flex items-start gap-3 border p-3 ${current ? 'border-[#0080d1] bg-sky-50' : 'border-slate-200'}`}><span className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${completed ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-500'}`}>{completed ? <CheckCircle2 size={16} /> : index + 1}</span><div><p className="text-sm font-bold text-slate-800">{step.label}{current && <span className="ml-2 text-xs font-semibold text-[#0080d1]">Current</span>}</p><p className="mt-0.5 text-xs text-slate-500">{step.description}</p></div></div>; })}</div>
             <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 pt-5"><div className="flex items-center gap-3"><UserCheck size={20} className="text-[#0080d1]" /><div><p className="text-xs font-bold uppercase tracking-wide text-slate-500">Assigned expert</p><p className="text-sm font-semibold text-slate-800">{assignedWriter || 'Not assigned yet'}</p></div></div><Link to="/contact-us" className="inline-flex items-center gap-2 border border-[#0080d1] px-3 py-2 text-xs font-bold text-[#0080d1] hover:bg-sky-50"><MessageSquare size={14} /> Contact support</Link></div>
+            {activeOrder.isDraft && activeStatus === 'pending' && <Link to={`/dashboard?newOrder=1&resumeOrder=${activeOrder.id}`} className="mt-6 inline-flex items-center gap-2 bg-[#0080d1] px-4 py-2.5 text-sm font-bold text-white hover:bg-[#006db3]">Continue this order</Link>}
             {activeStatus === 'completed' && <Link to="/portal/completed" className="mt-6 inline-flex items-center gap-2 bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-emerald-700">View completed solution</Link>}
           </div>
         </div>}

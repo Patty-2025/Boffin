@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Award, CalendarDays, CheckCircle2, ChevronDown, FileText, Headphones, LoaderCircle, LockKeyhole, Minus, Paperclip, Plus, Search, ShieldCheck, Star, Trash2, Upload, User, Wallet, X } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { addDoc, collection, doc, getDoc, runTransaction, serverTimestamp } from 'firebase/firestore';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { addDoc, collection, doc, getDoc, runTransaction, serverTimestamp, setDoc } from 'firebase/firestore';
 import { useAuth } from '../context/AuthContext';
 import { ALL_SUBJECTS } from '../constants/subjects';
 import { SERVICE_MENU_ITEMS } from '../constants/serviceMenu';
@@ -14,6 +14,7 @@ import { POINTS_PER_REFERRAL, userIdFromReferralCode } from '../lib/loyalty';
 export default function StudentDashboard() {
   const { user } = useAuth();
     const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const displayName = user?.displayName || user?.email?.split('@')[0] || 'there';
   const generatedPassword = localStorage.getItem('boffinGeneratedPassword');
   const verificationKey = user?.uid ? `boffinEmailVerified:${user.uid}` : '';
@@ -38,6 +39,7 @@ export default function StudentDashboard() {
   const [selectedWriterId, setSelectedWriterId] = useState<number | null>(null);
   const [paymentStatus, setPaymentStatus] = useState<'unpaid' | 'paid'>('unpaid');
   const [orderId, setOrderId] = useState<string | null>(null);
+  const [draftOrderId, setDraftOrderId] = useState<string | null>(null);
   const [showStripeCheckout, setShowStripeCheckout] = useState(false);
   const [orderError, setOrderError] = useState('');
   const [walletBalance, setWalletBalance] = useState(0);
@@ -98,8 +100,10 @@ export default function StudentDashboard() {
     addFiles(event.dataTransfer.files);
   };
 
-  const saveOrderDraft = () => {
-    localStorage.setItem('boffinOrderDraft', JSON.stringify({
+  const draftHasStarted = Boolean(topic.trim() || discipline || deadline || instructions.trim() || uploadedFiles.length || specificWriter.trim() || writerFinder);
+
+  const saveOrderDraft = async () => {
+    const localDraft = {
       topic,
       paperType,
       discipline,
@@ -113,8 +117,68 @@ export default function StudentDashboard() {
       specificWriter,
       writerFinder,
       savedAt: new Date().toISOString()
-    }));
+    };
+    localStorage.setItem('boffinOrderDraft', JSON.stringify(localDraft));
+    if (!user || !isVerified || !draftHasStarted || paymentStatus === 'paid') return;
+
+    const draftRef = draftOrderId ? doc(db, 'orders', draftOrderId) : doc(collection(db, 'orders'));
+    await setDoc(draftRef, {
+      userId: user.uid,
+      email: user.email || '',
+      fullName: user.displayName || displayName,
+      taskType: paperType,
+      topic,
+      paperType,
+      discipline,
+      pages,
+      deadline,
+      instructions,
+      citationFormat,
+      edition: apaEdition,
+      serviceType,
+      specificWriter,
+      writerFinder,
+      selectedWriterId: selectedWriter?.id || null,
+      selectedWriterName: selectedWriter?.name || null,
+      totalCost: orderTotal,
+      checkoutStep: orderStep,
+      paymentStatus: 'pending',
+      status: 'pending',
+      isDraft: true,
+      updatedAt: serverTimestamp(),
+      ...(draftOrderId ? {} : { createdAt: serverTimestamp() })
+    }, { merge: true });
+    if (!draftOrderId) setDraftOrderId(draftRef.id);
   };
+
+  useEffect(() => {
+    if (!user || !isVerified || !draftHasStarted || paymentStatus === 'paid') return;
+    const timer = window.setTimeout(() => { void saveOrderDraft(); }, 700);
+    return () => window.clearTimeout(timer);
+  }, [user, isVerified, draftHasStarted, topic, paperType, discipline, pages, deadline, instructions, uploadedFiles, citationFormat, apaEdition, serviceType, specificWriter, writerFinder, selectedWriterId, orderTotal, orderStep, paymentStatus]);
+
+  useEffect(() => {
+    const resumeOrderId = searchParams.get('resumeOrder');
+    if (!user || !resumeOrderId) return;
+    getDoc(doc(db, 'orders', resumeOrderId)).then((snapshot) => {
+      if (!snapshot.exists() || snapshot.data().userId !== user.uid || snapshot.data().status !== 'pending') return;
+      const saved = snapshot.data();
+      setDraftOrderId(snapshot.id);
+      setTopic(saved.topic || '');
+      setPaperType(saved.paperType || saved.taskType || 'Essay (any type)');
+      setDiscipline(saved.discipline || '');
+      setPages(saved.pages || 2);
+      setDeadline(saved.deadline || '');
+      setInstructions(saved.instructions || '');
+      setCitationFormat(saved.citationFormat || 'APA');
+      setApaEdition(saved.edition || 'APA 7th edition');
+      setServiceType(saved.serviceType || 'Sample writing');
+      setSpecificWriter(saved.specificWriter || '');
+      setWriterFinder(Boolean(saved.writerFinder));
+      setSelectedWriterId(saved.selectedWriterId || null);
+      setOrderStep(saved.checkoutStep || 1);
+    }).catch((error) => console.error('Error resuming order draft:', error));
+  }, [user, searchParams]);
 
   const continueOrder = () => {
     if (orderStep === 1 && !orderRequirementsComplete) {
@@ -126,7 +190,7 @@ export default function StudentDashboard() {
       return;
     }
     setOrderError('');
-    saveOrderDraft();
+    void saveOrderDraft();
     setOrderStep(Math.min(4, orderStep + 1));
   };
 
@@ -143,9 +207,12 @@ export default function StudentDashboard() {
         transaction.set(profileRef, { balance: currentBalance - walletAmountUsed }, { merge: true });
       });
     }
-    const order = await addDoc(collection(db, 'orders'), {
+    const orderRef = draftOrderId ? doc(db, 'orders', draftOrderId) : doc(collection(db, 'orders'));
+    await setDoc(orderRef, {
       userId: user.uid,
       email: user.email,
+      fullName: user.displayName || displayName,
+      taskType: paperType,
       topic,
       paperType,
       discipline,
@@ -164,13 +231,15 @@ export default function StudentDashboard() {
       balanceUsed: walletAmountUsed,
       referralCode: referrerId && referrerId !== user.uid ? referralCode : null,
       status: 'paid',
-      createdAt: serverTimestamp()
-    });
+      isDraft: false,
+      updatedAt: serverTimestamp(),
+      ...(draftOrderId ? {} : { createdAt: serverTimestamp() })
+    }, { merge: true });
     if (referrerId && referrerId !== user.uid) {
-      await addDoc(collection(db, 'referralEvents'), { referrerId, referredUserId: user.uid, orderId: order.id, points: POINTS_PER_REFERRAL, status: 'pending', createdAt: serverTimestamp() });
+      await addDoc(collection(db, 'referralEvents'), { referrerId, referredUserId: user.uid, orderId: orderRef.id, points: POINTS_PER_REFERRAL, status: 'pending', createdAt: serverTimestamp() });
       localStorage.removeItem('boffinReferralCode');
     }
-    setOrderId(order.id);
+    setOrderId(orderRef.id);
     setPaymentStatus('paid');
     navigate('/order-placed');
   };
