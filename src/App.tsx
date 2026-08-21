@@ -92,6 +92,7 @@ import BrandLogo from './components/BrandLogo';
 import TermsModal from './components/TermsModal';
 import Footer from './components/Footer';
 import DiscountBanner from './components/DiscountBanner';
+import EnquiryAttentionGrabber from './components/EnquiryAttentionGrabber';
 import PortalLayout from './components/PortalLayout';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLayout from './components/AdminLayout';
@@ -248,6 +249,7 @@ function AppContent() {
 
 
       {!isLoginPage && !isPortalPage && !isAdminPage && <Footer />}
+      {!isLoginPage && !isPortalPage && !isAdminPage && <EnquiryAttentionGrabber />}
     </div>
   );
 }
