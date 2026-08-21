@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth, googleProvider, appleProvider, facebookProvider } from '../lib/firebase';
+import { auth, authPersistenceReady, googleProvider, appleProvider, facebookProvider } from '../lib/firebase';
 import { signInWithPopup } from 'firebase/auth';
 import TermsModal from './TermsModal';
 
@@ -55,8 +55,9 @@ export default function OrderFormWidget() {
       } else {
         provider = googleProvider;
       }
+      await authPersistenceReady;
       await signInWithPopup(auth, provider);
-      navigate('/dashboard');
+      navigate('/order');
     } catch (err: any) {
       setAuthError(err.message || `${pendingProvider} sign in failed`);
     } finally {

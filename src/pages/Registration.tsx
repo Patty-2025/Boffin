@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
-import { auth, googleProvider, appleProvider, facebookProvider } from '../lib/firebase';
+import { auth, authPersistenceReady, googleProvider, appleProvider, facebookProvider } from '../lib/firebase';
 import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { ensureClientId } from '../lib/clientId';
+import { collection, getDocs, query, where } from '../lib/realtimeFirestore';
+import { db } from '../lib/firebase';
 
 export default function Registration() {
   const [searchParams] = useSearchParams();
@@ -27,8 +30,31 @@ export default function Registration() {
     }
   }, [initialEmail, referralCode]);
 
-  const handleAuthSuccess = () => {
-    navigate('/dashboard');
+  const ensureRegisteredClientId = async () => {
+    const currentUser = auth.currentUser;
+    if (!currentUser) return;
+    await ensureClientId(currentUser);
+  };
+
+  const handleAuthSuccess = async () => {
+    try {
+      await ensureRegisteredClientId();
+    } catch (error) {
+      console.error('Client ID assignment skipped because Firestore is unavailable:', error);
+    }
+    if (redirect === 'order') {
+      navigate('/order');
+      return;
+    }
+
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      navigate('/dashboard');
+      return;
+    }
+
+    const ordersSnapshot = await getDocs(query(collection(db, 'orders'), where('userId', '==', currentUser.uid)));
+    navigate(ordersSnapshot.empty ? '/portal/place-order' : '/dashboard');
   };
 
   const generatePassword = () => {
@@ -40,8 +66,9 @@ export default function Registration() {
     setIsLoading(true);
     setError(null);
     try {
+      await authPersistenceReady;
       await signInWithPopup(auth, googleProvider);
-      handleAuthSuccess();
+      await handleAuthSuccess();
     } catch (err: any) {
       setError(err.message || 'Failed to sign in with Google');
     } finally {
@@ -53,8 +80,9 @@ export default function Registration() {
     setIsLoading(true);
     setError(null);
     try {
+      await authPersistenceReady;
       await signInWithPopup(auth, appleProvider);
-      handleAuthSuccess();
+      await handleAuthSuccess();
     } catch (err: any) {
       setError(err.message || 'Failed to sign in with Apple');
     } finally {
@@ -66,8 +94,9 @@ export default function Registration() {
     setIsLoading(true);
     setError(null);
     try {
+      await authPersistenceReady;
       await signInWithPopup(auth, facebookProvider);
-      handleAuthSuccess();
+      await handleAuthSuccess();
     } catch (err: any) {
       setError(err.message || 'Failed to sign in with Facebook');
     } finally {
@@ -86,6 +115,7 @@ export default function Registration() {
     setError(null);
 
     try {
+      await authPersistenceReady;
       // Try to create account
       if (password) {
         await createUserWithEmailAndPassword(auth, email, password);
@@ -94,14 +124,15 @@ export default function Registration() {
         await createUserWithEmailAndPassword(auth, email, generatedPassword);
         localStorage.setItem('boffinGeneratedPassword', generatedPassword);
       }
-      handleAuthSuccess();
+      await handleAuthSuccess();
     } catch (err: any) {
       if (err.code === 'auth/email-already-in-use') {
         // If email exists, sign in
         try {
           if (password) {
+            await authPersistenceReady;
             await signInWithEmailAndPassword(auth, email, password);
-            handleAuthSuccess();
+            await handleAuthSuccess();
           } else {
             setError('Account already exists for this email. Please enter your password or log in.');
           }

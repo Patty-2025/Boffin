@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { auth, db } from '../lib/firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc } from '../lib/realtimeFirestore';
 
 export default function AdminRoute({ children }: { children: React.ReactNode }) {
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
@@ -16,7 +16,7 @@ export default function AdminRoute({ children }: { children: React.ReactNode }) 
       }
       try {
         const adminDoc = await getDoc(doc(db, 'admins', auth.currentUser.uid));
-        setIsAdmin(adminDoc.exists());
+        setIsAdmin(adminDoc.exists() && adminDoc.data()?.enabled !== false);
       } catch (e) {
         setIsAdmin(false);
       }
@@ -26,7 +26,7 @@ export default function AdminRoute({ children }: { children: React.ReactNode }) 
   }, [auth.currentUser]);
 
   if (loading) return <div>Loading...</div>;
-  if (!isAdmin) return <Navigate to="/" />;
+  if (!isAdmin) return <Navigate to="/portal/admin/login" replace />;
 
   return <>{children}</>;
 }

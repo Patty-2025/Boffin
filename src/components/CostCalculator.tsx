@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { db } from '../lib/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from '../lib/realtimeFirestore';
 import { 
   Calculator, Check, CheckCircle2, Code, Layout, Smartphone, Globe, 
   BookOpen, GraduationCap, Clock, FileText, CreditCard, 

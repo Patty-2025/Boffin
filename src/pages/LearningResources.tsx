@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs } from '../lib/realtimeFirestore';
 import { db } from '../lib/firebase';
+import PortalPageHeader from '../components/PortalPageHeader';
 
 interface Resource {
   id: string;
@@ -33,8 +34,8 @@ export default function LearningResources() {
   }, []);
 
   return (
-      <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-slate-900">Learning Resources</h1>
+      <div className="mt-2 space-y-6">
+        <PortalPageHeader title="Learning Resources" description="Browse guides, templates, and other helpful resources." />
         
         {loading ? (
           <div className="text-slate-500">Loading resources...</div>

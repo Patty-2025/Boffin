@@ -25,7 +25,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
   }
 
   const emailVerified = user.emailVerified || Boolean(sessionStorage.getItem(`boffinEmailVerified:${user.uid}`));
-  if (!emailVerified && location.pathname !== '/dashboard' && location.pathname !== '/portal/dashboard') {
+  if (!emailVerified && location.pathname !== '/dashboard' && location.pathname !== '/portal/dashboard' && location.pathname !== '/portal/place-order') {
     return <Navigate to="/dashboard" replace />;
   }
 

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Award, Check, Copy, FileText, Gift, Headphones, Link as LinkIcon, LoaderCircle, User, Wallet } from 'lucide-react';
-import { collection, doc, getDoc, getDocs, query, runTransaction, serverTimestamp, setDoc, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, runTransaction, serverTimestamp, setDoc, where } from '../lib/realtimeFirestore';
 import { Link } from 'react-router-dom';
 import { db } from '../lib/firebase';
 import { useAuth } from '../context/AuthContext';
-import { POINTS_PER_REFERRAL, POINTS_PER_REWARD, REWARD_VALUE, referralCodeForUser, referralLinkForUser } from '../lib/loyalty';
+import PortalPageHeader from '../components/PortalPageHeader';
+import { DEFAULT_LOYALTY_SETTINGS, fetchLoyaltySettings, referralCodeForUser, referralLinkForUser, type LoyaltySettings } from '../lib/loyalty';
 
 interface LoyaltyProfile {
   loyaltyPoints?: number;
@@ -25,6 +26,7 @@ export default function LoyaltyPoints() {
   const { user } = useAuth();
   const [profile, setProfile] = useState<LoyaltyProfile>({});
   const [referrals, setReferrals] = useState<ReferralEvent[]>([]);
+  const [loyaltySettings, setLoyaltySettings] = useState<LoyaltySettings>(DEFAULT_LOYALTY_SETTINGS);
   const [loading, setLoading] = useState(true);
   const [isRedeeming, setIsRedeeming] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -34,12 +36,15 @@ export default function LoyaltyPoints() {
   const referralLink = user ? referralLinkForUser(user.uid) : '';
   const points = profile.loyaltyPoints || 0;
   const balance = profile.balance || 0;
-  const redeemableRewards = Math.floor(points / POINTS_PER_REWARD);
+  const redeemableRewards = Math.floor(points / loyaltySettings.pointsPerReward);
 
   const loadLoyalty = async () => {
     if (!user) return;
     setLoading(true);
     try {
+      const settings = await fetchLoyaltySettings();
+      setLoyaltySettings(settings);
+
       const profileRef = doc(db, 'studentProfiles', user.uid);
       const profileSnapshot = await getDoc(profileRef);
       const currentProfile = (profileSnapshot.exists() ? profileSnapshot.data() : {}) as LoyaltyProfile;
@@ -84,7 +89,8 @@ export default function LoyaltyPoints() {
       await runTransaction(db, async (transaction) => {
         const profileSnapshot = await transaction.get(profileRef);
         const currentPoints = profileSnapshot.exists() ? profileSnapshot.data().loyaltyPoints || 0 : 0;
-        transaction.set(profileRef, { loyaltyPoints: currentPoints + pending.reduce((sum, referral) => sum + (referral.points || POINTS_PER_REFERRAL), 0) }, { merge: true });
+        const pendingPoints = pending.reduce((sum, referral) => sum + (referral.points || loyaltySettings.pointsPerReferral), 0);
+        transaction.set(profileRef, { loyaltyPoints: currentPoints + pendingPoints }, { merge: true });
         pending.forEach((referral) => transaction.update(doc(db, 'referralEvents', referral.id), { status: 'claimed', claimedAt: serverTimestamp() }));
       });
       await loadLoyalty();
@@ -104,11 +110,11 @@ export default function LoyaltyPoints() {
         const profileSnapshot = await transaction.get(profileRef);
         const currentPoints = profileSnapshot.exists() ? profileSnapshot.data().loyaltyPoints || 0 : 0;
         const currentBalance = profileSnapshot.exists() ? profileSnapshot.data().balance || 0 : 0;
-        const rewards = Math.floor(currentPoints / POINTS_PER_REWARD);
+        const rewards = Math.floor(currentPoints / loyaltySettings.pointsPerReward);
         if (rewards < 1) throw new Error('Not enough points to redeem.');
         transaction.set(profileRef, {
-          loyaltyPoints: currentPoints - rewards * POINTS_PER_REWARD,
-          balance: currentBalance + rewards * REWARD_VALUE
+          loyaltyPoints: currentPoints - rewards * loyaltySettings.pointsPerReward,
+          balance: currentBalance + rewards * loyaltySettings.rewardValue
         }, { merge: true });
       });
       await loadLoyalty();
@@ -128,12 +134,9 @@ export default function LoyaltyPoints() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-7xl animate-in fade-in duration-500 pb-5 font-['Open_Sans',sans-serif]">
-      <section className="overflow-hidden border border-slate-200 bg-white shadow-sm">
-        <div className="border-b border-slate-200 bg-[#d9e0ed] px-5 py-4 lg:px-8">
-          <h1 className="text-2xl font-bold text-slate-900">Loyalty points</h1>
-          <p className="mt-1 text-sm text-slate-600">Share your link, earn points, and turn rewards into balance credit.</p>
-        </div>
+    <div className="mx-auto mt-2 w-full max-w-7xl animate-in fade-in duration-500 pb-5 font-['Open_Sans',sans-serif]">
+      <section className="overflow-hidden bg-transparent">
+        <PortalPageHeader title="Loyalty points" description="Share your link, earn points, and turn rewards into balance credit." />
 
         <div className="grid gap-4 p-4 lg:grid-cols-[1.1fr_0.9fr] lg:p-6">
           <div className="border border-slate-200 p-4">
@@ -147,13 +150,13 @@ export default function LoyaltyPoints() {
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-            <div className="border border-slate-200 bg-slate-50 p-4"><div className="flex items-center gap-2 text-sm font-semibold text-slate-600"><Award size={18} className="text-[#0080d1]" /> Available points</div><p className="mt-1 text-2xl font-bold text-slate-900">{points}</p><p className="mt-1 text-xs text-slate-500">{POINTS_PER_REFERRAL} points per qualifying referral</p></div>
+            <div className="border border-slate-200 bg-slate-50 p-4"><div className="flex items-center gap-2 text-sm font-semibold text-slate-600"><Award size={18} className="text-[#0080d1]" /> Available points</div><p className="mt-1 text-2xl font-bold text-slate-900">{points}</p><p className="mt-1 text-xs text-slate-500">{loyaltySettings.pointsPerReferral} points per qualifying referral</p></div>
             <div className="border border-slate-200 bg-slate-50 p-4"><div className="flex items-center gap-2 text-sm font-semibold text-slate-600"><Wallet size={18} className="text-[#0080d1]" /> Balance credit</div><p className="mt-1 text-2xl font-bold text-slate-900">${balance.toFixed(2)}</p><p className="mt-1 text-xs text-slate-500">Available to use at checkout</p></div>
           </div>
         </div>
 
         <div className="grid gap-4 border-t border-slate-200 p-4 lg:grid-cols-[1fr_1fr] lg:p-6">
-          <div className="border border-slate-200 p-4"><h2 className="text-lg font-bold text-slate-900">Redeem points</h2><p className="mt-1 text-sm text-slate-600">Every {POINTS_PER_REWARD} points becomes ${REWARD_VALUE} in balance credit.</p><button type="button" disabled={redeemableRewards < 1 || isRedeeming} onClick={redeemPoints} className="mt-3 inline-flex items-center gap-2 rounded-lg bg-[#0080d1] px-4 py-2 text-sm font-bold text-white hover:bg-[#004695] disabled:cursor-not-allowed disabled:opacity-40">{isRedeeming && <LoaderCircle size={16} className="animate-spin" />} Redeem {redeemableRewards > 0 ? `${redeemableRewards * REWARD_VALUE} dollars` : 'when available'}</button></div>
+          <div className="border border-slate-200 p-4"><h2 className="text-lg font-bold text-slate-900">Redeem points</h2><p className="mt-1 text-sm text-slate-600">Every {loyaltySettings.pointsPerReward} points becomes ${loyaltySettings.rewardValue} in balance credit.</p><button type="button" disabled={redeemableRewards < 1 || isRedeeming} onClick={redeemPoints} className="mt-3 inline-flex items-center gap-2 rounded-lg bg-[#0080d1] px-4 py-2 text-sm font-bold text-white hover:bg-[#004695] disabled:cursor-not-allowed disabled:opacity-40">{isRedeeming && <LoaderCircle size={16} className="animate-spin" />} Redeem {redeemableRewards > 0 ? `${redeemableRewards * loyaltySettings.rewardValue} dollars` : 'when available'}</button></div>
           <div className="border border-slate-200 p-4"><h2 className="text-lg font-bold text-slate-900">Referral activity</h2>{loading ? <p className="mt-2 text-sm text-slate-500">Loading activity...</p> : referrals.length === 0 ? <p className="mt-2 text-sm text-slate-500">No referrals yet. Your completed referrals will appear here.</p> : <div className="mt-2 space-y-1">{referrals.slice(0, 5).map((referral) => <div key={referral.id} className="flex items-center justify-between border-b border-slate-100 py-1.5 text-sm last:border-0"><span className="truncate text-slate-600">Order {referral.orderId.slice(-8).toUpperCase()}</span><span className={`font-bold ${referral.status === 'claimed' ? 'text-emerald-600' : 'text-amber-600'}`}>{referral.status === 'claimed' ? `+${referral.points} pts` : 'Pending'}</span></div>)}</div>}</div>
         </div>
         {referrals.some((referral) => referral.status === 'pending') && <div className="border-t border-slate-200 px-5 py-4 lg:px-8"><button type="button" onClick={claimPendingReferrals} className="inline-flex items-center gap-2 text-sm font-bold text-[#0080d1] hover:text-[#004695]"><Gift size={17} /> Claim pending referral rewards</button></div>}

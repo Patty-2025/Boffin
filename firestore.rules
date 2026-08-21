@@ -31,6 +31,13 @@ service cloud.firestore {
       allow update: if isOwner(userId);
     }
 
+    // Sequential client ID counter
+    match /counters/clientIds {
+      allow get: if isSignedIn();
+      allow create: if isSignedIn() && request.resource.data.lastId == 100000;
+      allow update: if isSignedIn() && request.resource.data.lastId == resource.data.lastId + 1;
+    }
+
     // Lead Rules
     match /leads/{leadId} {
       allow create: if isValidId(leadId) && isValidLead(request.resource.data);
@@ -43,6 +50,11 @@ service cloud.firestore {
       allow get: if isSignedIn() && (resource.data.userId == request.auth.uid || resource.data.email == request.auth.token.email);
       allow create: if isValidId(orderId) && isValidOrder(request.resource.data);
       allow update: if isSignedIn() && (resource.data.userId == request.auth.uid || resource.data.email == request.auth.token.email || isAdmin());
+    }
+
+    match /cancelledOrders/{orderId} {
+      allow list, get: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
     }
 
     // Transaction Rules
@@ -107,7 +119,7 @@ service cloud.firestore {
           && data.fullName is string && data.fullName.size() > 0 && data.fullName.size() <= 100
           && data.email is string && data.email.matches('^[^@]+@[^@]+\\.[^@]+$') && data.email.size() <= 255
           && data.taskType is string && data.taskType.size() > 0
-          && data.status in ['draft', 'pending', 'paid', 'completed']
+          && data.status in ['draft', 'pending', 'paid', 'completed', 'cancelled']
           && data.createdAt is timestamp;
     }
 

@@ -19,9 +19,10 @@ interface StripeCheckoutFormProps {
   onPaymentSuccess: (paymentId: string) => Promise<void> | void;
   isSubmittingOrder: boolean;
   compact?: boolean;
+  onBack?: () => void;
 }
 
-function InnerForm({ amount, email, fullName, onPaymentSuccess, isSubmittingOrder, fallbackMode = false, compact = false }: StripeCheckoutFormProps & { fallbackMode?: boolean }) {
+function InnerForm({ amount, email, fullName, onPaymentSuccess, isSubmittingOrder, onBack, fallbackMode = false, compact = false }: StripeCheckoutFormProps & { fallbackMode?: boolean }) {
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -92,11 +93,11 @@ function InnerForm({ amount, email, fullName, onPaymentSuccess, isSubmittingOrde
   return (
     <form onSubmit={handleSubmit} name="stripe-payment" autoComplete="off" noValidate className={compact ? 'space-y-3' : 'space-y-4'}>
       {compact ? (
-        <div className="rounded-xl border border-slate-200 bg-white p-4">
+        <div className="border border-slate-200 bg-white p-4">
           <div className="mb-3 flex flex-wrap items-center gap-3 text-xs font-bold text-slate-600">
             <span className="text-[#1434CB]">VISA</span><span className="text-[#EB001B]">MASTERCARD</span><span className="text-[#006FCF]">AMEX</span><span className="text-[#F58220]">DISCOVER</span>
           </div>
-          {!useCardElementFallback ? <PaymentElement options={{ layout: 'tabs' }} /> : <div className="rounded-lg border border-slate-200 p-3"><CardElement options={{ style: { base: { fontSize: '14px', color: '#1e293b', '::placeholder': { color: '#94a3b8' } } } }} /></div>}
+          {!useCardElementFallback ? <PaymentElement options={{ layout: 'tabs' }} /> : <div className="border border-slate-200 p-3"><CardElement options={{ style: { base: { fontSize: '14px', color: '#1e293b', '::placeholder': { color: '#94a3b8' } } } }} /></div>}
         </div>
       ) : (
       <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
@@ -158,34 +159,23 @@ function InnerForm({ amount, email, fullName, onPaymentSuccess, isSubmittingOrde
           </div>
         )}
 
-        {errorMessage && (
-          <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl flex items-start gap-2">
-            <AlertCircle size={16} className="shrink-0 mt-0.5" />
-            <span>{errorMessage}</span>
-          </div>
-        )}
       </div>
       )}
 
-      {/* Accepted Card Badges */}
-      <div className="flex items-center justify-between text-[11px] text-slate-500 px-1 font-medium">
-        <span className="flex items-center gap-1">
-          <Lock size={12} className="text-emerald-600" />
-          End-to-end Stripe encryption
-        </span>
-        <div className="flex items-center gap-2 font-bold text-slate-400">
-          <span>VISA</span>
-          <span>MC</span>
-          <span>AMEX</span>
-          <span>DISCOVER</span>
+      {errorMessage && (
+        <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl flex items-start gap-2">
+          <AlertCircle size={16} className="shrink-0 mt-0.5" />
+          <span>{errorMessage}</span>
         </div>
-      </div>
+      )}
 
       {/* Pay Now Button */}
+      <div className={compact && onBack ? 'flex items-center justify-between gap-3' : ''}>
+      {compact && onBack && <button type="button" onClick={onBack} className="bg-[#0080d1] px-7 py-3 text-sm font-extrabold text-white transition hover:bg-[#004695]">Back</button>}
       <button
         type="submit"
         disabled={processing || isSubmittingOrder}
-        className="w-full bg-gradient-to-r from-amber-500 via-amber-600 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-base py-4 rounded-xl transition-all shadow-xl shadow-amber-500/20 disabled:opacity-50 hover:-translate-y-0.5 active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer"
+        className={compact && onBack ? 'ml-auto inline-flex items-center justify-center bg-[#0080d1] px-7 py-3 text-sm font-extrabold text-white transition hover:bg-[#004695] disabled:cursor-not-allowed disabled:opacity-60' : compact ? 'w-full bg-[#0080d1] px-7 py-3 text-sm font-extrabold text-white transition hover:bg-[#004695] disabled:cursor-not-allowed disabled:opacity-60 flex items-center justify-center gap-2 cursor-pointer' : 'w-full bg-gradient-to-r from-amber-500 via-amber-600 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-base py-4 rounded-xl transition-all shadow-xl shadow-amber-500/20 disabled:opacity-50 hover:-translate-y-0.5 active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer'}
       >
         {processing || isSubmittingOrder ? (
           <>
@@ -199,6 +189,7 @@ function InnerForm({ amount, email, fullName, onPaymentSuccess, isSubmittingOrde
           </>
         )}
       </button>
+      </div>
 
       {!compact && <p className="text-[11px] text-slate-500 text-center mt-1">Backed by 100% Money-Back Guarantee & Free Turnitin Plagiarism Report.</p>}
     </form>
@@ -254,7 +245,7 @@ export default function StripeCheckoutForm(props: StripeCheckoutFormProps) {
   if (loadingIntent) {
     return (
       <div className="p-8 bg-slate-50 border border-slate-200 rounded-2xl text-center space-y-3">
-        <RefreshCw size={24} className="animate-spin text-amber-600 mx-auto" />
+        <RefreshCw size={24} className="animate-spin text-[#0080d1] mx-auto" />
         <p className="text-xs font-bold text-slate-600">Initializing Secure Stripe Payment Gateway...</p>
       </div>
     );
@@ -279,10 +270,10 @@ export default function StripeCheckoutForm(props: StripeCheckoutFormProps) {
           appearance: {
             theme: 'stripe',
             variables: {
-              colorPrimary: '#f59e0b',
+              colorPrimary: '#0080d1',
               colorBackground: '#ffffff',
               colorText: '#0f172a',
-              borderRadius: '12px',
+              borderRadius: '0px',
             },
           },
         }}

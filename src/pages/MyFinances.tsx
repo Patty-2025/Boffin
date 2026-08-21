@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, where, orderBy, getDocs, getDoc, addDoc, serverTimestamp, deleteDoc, doc, limit } from 'firebase/firestore';
+import { collection, query, where, orderBy, getDocs, getDoc, addDoc, serverTimestamp, deleteDoc, doc, limit } from '../lib/realtimeFirestore';
 import { db } from '../lib/firebase';
 import { useAuth } from '../context/AuthContext';
 import { 
@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
+import PortalPageHeader from '../components/PortalPageHeader';
 
 interface Transaction {
   id: string;
@@ -165,7 +166,8 @@ export default function MyFinances() {
   );
 
   return (
-    <div className="mx-auto w-full max-w-7xl animate-in fade-in duration-500 pb-6 font-['Open_Sans',sans-serif]">
+    <div className="mx-auto mt-2 w-full max-w-7xl animate-in fade-in duration-500 pb-6 font-['Open_Sans',sans-serif]">
+      <PortalPageHeader title="Balance" description="Manage your balance, payment methods, and transaction history." />
       {/* Finance Stats */}
       <div className="hidden">
         <div className="bg-emerald-500 p-6 rounded-3xl text-white shadow-xl shadow-emerald-500/20 relative overflow-hidden group">
@@ -233,10 +235,10 @@ export default function MyFinances() {
         </div>
       </div>
       
-      <div className="flex flex-col gap-4 lg:flex-row lg:gap-5">
+      <div className="mt-4 flex w-full flex-col gap-6 lg:flex-row lg:gap-6">
         {/* Transaction History */}
-        <div className="order-1 min-w-0 flex-1 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm lg:order-1">
-          <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
+        <div className="order-1 min-w-0 flex-1 overflow-hidden border border-black bg-transparent shadow-sm lg:order-1">
+          <div className="flex items-center justify-between border-b border-black px-4 py-3">
             <h2 className="text-base font-bold text-slate-900">Transaction history</h2>
             <button className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-[#0080d1]">
               <Filter size={14} /> Filter Activity
@@ -245,13 +247,13 @@ export default function MyFinances() {
 
           <div className="overflow-x-auto">
             <table className="w-full min-w-[720px] border-collapse text-left text-sm">
-              <thead className="bg-[#d9e0ed] text-xs font-bold text-slate-900">
-                <tr>
-                  <th className="px-4 py-3">Reference</th>
-                  <th className="px-4 py-3">Details</th>
-                  <th className="px-4 py-3">Method</th>
-                  <th className="px-4 py-3">Amount</th>
-                  <th className="px-4 py-3 text-center">Status</th>
+              <thead className="bg-[#d7ebe9] text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#174b54]">
+                <tr className="border-b-2 border-black">
+                  <th className="border-r border-black px-4 py-3.5">Reference</th>
+                  <th className="border-r border-black px-4 py-3.5">Details</th>
+                  <th className="border-r border-black px-4 py-3.5">Method</th>
+                  <th className="border-r border-black px-4 py-3.5">Amount</th>
+                  <th className="px-4 py-3.5 text-center">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -261,7 +263,7 @@ export default function MyFinances() {
                   </tr>
                 ) : transactions.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="px-6 py-8 text-center">
+                    <td colSpan={5} className="bg-transparent px-6 py-8 text-center">
                       <div className="flex flex-col items-center gap-2">
                          <History size={34} className="text-slate-300" />
                          <p className="font-bold text-slate-700">No transactions yet</p>
@@ -276,7 +278,7 @@ export default function MyFinances() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: idx * 0.05 }}
                       key={t.id} 
-                      className="transition-colors hover:bg-slate-50"
+                      className="bg-white transition-colors hover:bg-slate-50"
                     >
                       <td className="px-4 py-3 font-mono text-xs font-bold text-slate-900">{t.transactionId}</td>
                       <td className="px-4 py-3">
@@ -336,8 +338,8 @@ export default function MyFinances() {
         </div>
 
         {/* Saved Cards Sidebar */}
-        <div className="order-2 w-full space-y-4 lg:order-2 lg:w-80">
-          <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="order-2 w-full space-y-4 lg:order-2 lg:w-80 lg:shrink-0">
+          <div className="border border-slate-200 bg-white p-5 shadow-sm">
             <div className="mb-3 flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#d9e0ed] text-[#0080d1]"><Plus size={20} /></div>
               <div><h2 className="text-base font-extrabold text-slate-900">Top up balance</h2><p className="text-xs text-slate-500">Current balance: ${balance.toFixed(2)}</p></div>
@@ -351,7 +353,7 @@ export default function MyFinances() {
             <p className="mt-2 text-center text-xs text-slate-400">Secure payment powered by Stripe.</p>
           </div>
 
-           <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+           <div className="border border-slate-200 bg-white p-5 shadow-sm">
              <h3 className="mb-3 flex items-center justify-between text-sm font-bold text-slate-900">
                Saved Accounts
                <Lock size={12} className="text-slate-400" />

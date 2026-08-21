@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
@@ -15,7 +15,7 @@ import About from './pages/About';
 import Login from './pages/Login';
 import Registration from './pages/Registration';
 import Dashboard from './pages/Dashboard';
-import StudentDashboard from './pages/StudentDashboard';
+import PlaceOrder from './pages/PlaceOrder';
 import TrackOrder from './components/TrackOrder';
 import MyAssignments from './pages/MyAssignments';
 import LearningResources from './pages/LearningResources';
@@ -94,20 +94,22 @@ import Footer from './components/Footer';
 import DiscountBanner from './components/DiscountBanner';
 import PortalLayout from './components/PortalLayout';
 import Order from './pages/Order';
-import OrderPlaced from './pages/OrderPlaced';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLayout from './components/AdminLayout';
 import AdminRoute from './components/AdminRoute';
 import AdminChat from './pages/AdminChat';
 import AdminSitemaps from './pages/AdminSitemaps';
+import AdminLogin from './pages/AdminLogin';
+import AdminPortalDashboard from './pages/AdminPortalDashboard';
+import AdminOrders from './pages/AdminOrders';
 
 import { AuthProvider } from './context/AuthContext';
 
 function AppContent() {
   const location = useLocation();
-  const isLoginPage = location.pathname === '/login' || location.pathname === '/log-in.html' || location.pathname === '/signup' || location.pathname === '/registration.html' || location.pathname === '/registration' || location.pathname === '/register' || location.pathname === '/order';
-  const isAdminPage = location.pathname.startsWith('/admin');
-  const isPortalPage = location.pathname.startsWith('/portal') || location.pathname === '/dashboard';
+  const isLoginPage = location.pathname === '/login' || location.pathname === '/log-in.html' || location.pathname === '/signup' || location.pathname === '/registration.html' || location.pathname === '/registration' || location.pathname === '/register' || location.pathname === '/order' || location.pathname === '/portal/admin/login';
+  const isAdminPage = location.pathname.startsWith('/admin') || location.pathname.startsWith('/portal/admin');
+  const isPortalPage = location.pathname.startsWith('/portal') || location.pathname === '/dashboard' || location.pathname === '/order-placed';
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col relative overflow-x-hidden">
@@ -123,9 +125,15 @@ function AppContent() {
           <Route path="/about-us" element={<About />} />
           <Route path="/hire" element={<HireWriter />} />
           <Route path="/order" element={<ProtectedRoute><Order /></ProtectedRoute>} />
-          <Route path="/order-placed" element={<OrderPlaced />} />
+          <Route path="/order-placed" element={<Navigate to="/portal/track" replace />} />
+          <Route path="/portal/admin/login" element={<AdminLogin />} />
+          <Route path="/portal/admin/dashboard" element={<AdminRoute><AdminLayout><AdminPortalDashboard /></AdminLayout></AdminRoute>} />
+          <Route path="/portal/admin/orders" element={<AdminRoute><AdminLayout><AdminOrders /></AdminLayout></AdminRoute>} />
+          <Route path="/portal/admin/chat" element={<AdminRoute><AdminLayout><AdminChat /></AdminLayout></AdminRoute>} />
+          <Route path="/portal/admin/sitemaps" element={<AdminRoute><AdminLayout><AdminSitemaps /></AdminLayout></AdminRoute>} />
           <Route path="/admin/chat" element={<AdminRoute><AdminLayout><AdminChat /></AdminLayout></AdminRoute>} />
           <Route path="/admin/dashboard" element={<AdminRoute><AdminLayout><AdminDashboard /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/orders" element={<AdminRoute><AdminLayout><AdminOrders /></AdminLayout></AdminRoute>} />
           <Route path="/admin/sitemaps" element={<AdminRoute><AdminLayout><AdminSitemaps /></AdminLayout></AdminRoute>} />
           <Route path="/login" element={<Login />} />
           <Route path="/log-in.html" element={<Login />} />
@@ -133,8 +141,9 @@ function AppContent() {
           <Route path="/registration.html" element={<Registration />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/register" element={<Registration />} />
-          <Route path="/dashboard" element={<ProtectedRoute><PortalLayout><StudentDashboard /></PortalLayout></ProtectedRoute>} />
-          <Route path="/portal/dashboard" element={<ProtectedRoute><PortalLayout><StudentDashboard /></PortalLayout></ProtectedRoute>} />
+          <Route path="/dashboard" element={<ProtectedRoute><PortalLayout><Dashboard /></PortalLayout></ProtectedRoute>} />
+          <Route path="/portal/dashboard" element={<ProtectedRoute><PortalLayout><Dashboard /></PortalLayout></ProtectedRoute>} />
+          <Route path="/portal/place-order" element={<ProtectedRoute><PortalLayout><PlaceOrder /></PortalLayout></ProtectedRoute>} />
           <Route path="/portal/track" element={<ProtectedRoute><PortalLayout><TrackOrder /></PortalLayout></ProtectedRoute>} />
           <Route path="/portal/new-assignment" element={<ProtectedRoute><PortalLayout><NewAssignment /></PortalLayout></ProtectedRoute>} />
           <Route path="/portal/assignments" element={<ProtectedRoute><PortalLayout><MyAssignments /></PortalLayout></ProtectedRoute>} />

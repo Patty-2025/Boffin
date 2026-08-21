@@ -189,7 +189,7 @@ export default function Footer() {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 text-[#cdcdcd] text-[14px] leading-[24px]">
             <div>
-              BoffinGlobal.com provides writing and research services for limited use only. All the materials from our website should be used with proper references and in accordance with{' '}
+              boffinglobalgroup.com provides writing and research services for limited use only. All the materials from our website should be used with proper references and in accordance with{' '}
               <a className="text-blue-200 hover:text-blue-500 transition-colors" href="/terms">
                 Terms &amp; Conditions
               </a>

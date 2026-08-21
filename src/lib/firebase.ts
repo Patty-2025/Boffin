@@ -1,18 +1,15 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider, sendEmailVerification, updateProfile } from 'firebase/auth';
-import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
+import { getAuth, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider, sendEmailVerification, updateProfile, setPersistence, browserSessionPersistence } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
+import { getDatabase } from 'firebase/database';
 import firebaseConfig from '../../firebase-applet-config.json';
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 export const auth = getAuth(app);
+export const authPersistenceReady = setPersistence(auth, browserSessionPersistence);
 export const storage = getStorage(app);
-
-// Use standard Firestore instance to enable WebSockets / auto-connection without forced long polling timeouts
-export const db = getFirestore(
-  app, 
-  firebaseConfig.firestoreDatabaseId === '(default)' ? undefined : firebaseConfig.firestoreDatabaseId
-);
+export const realtimeDb = getDatabase(app, firebaseConfig.databaseURL);
+export const db = realtimeDb;
 
 export { sendEmailVerification, updateProfile };
 

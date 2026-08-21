@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
+import { collection, query, where, getDocs, orderBy } from '../lib/realtimeFirestore';
 import { db } from '../lib/firebase';
 import { useAuth } from '../context/AuthContext';
 import { AlertCircle, Award, CheckCircle2, Clock, FileText, Headphones, LoaderCircle, User, Wallet } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import PortalPageHeader from '../components/PortalPageHeader';
 
 interface Order {
   id: string;
   taskType: string;
   subject: string;
-  status: 'draft' | 'pending' | 'paid' | 'completed';
+  status: 'draft' | 'pending' | 'paid' | 'in_progress' | 'completed';
   totalCost: number;
   deadlineDate?: string;
   deadline?: string;
@@ -51,9 +52,10 @@ export default function MyAssignments() {
   }, [user]);
 
   return (
-    <div className="space-y-6">
+    <div className="mt-2 space-y-6">
+      <PortalPageHeader title="My assignments" description="Review the latest status of your submitted orders." />
       <div className="mx-auto w-full max-w-7xl animate-in fade-in duration-500">
-      <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+      <div className="overflow-x-auto">
         <table className="w-full min-w-[900px] border-collapse text-left">
           <thead className="bg-[#d9e0ed] text-sm font-extrabold text-slate-900">
             <tr>
@@ -89,13 +91,14 @@ export default function MyAssignments() {
 }
 
 function PaymentBadge({ status }: { status: string }) {
-  const paid = status === 'paid' || status === 'completed';
+  const paid = status === 'paid' || status === 'in_progress' || status === 'completed';
   return <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-bold ${paid ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}`}>{paid ? <CheckCircle2 size={11} /> : <Clock size={11} />}{paid ? 'Paid' : 'Pending'}</span>;
 }
 
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, { bg: string, text: string, icon: any }> = {
     paid: { bg: 'bg-emerald-50', text: 'text-emerald-700', icon: CheckCircle2 },
+    in_progress: { bg: 'bg-slate-100', text: 'text-slate-700', icon: Clock },
     pending: { bg: 'bg-amber-50', text: 'text-amber-700', icon: AlertCircle },
     completed: { bg: 'bg-indigo-50', text: 'text-indigo-700', icon: CheckCircle2 },
     draft: { bg: 'bg-slate-50', text: 'text-slate-500', icon: Clock }

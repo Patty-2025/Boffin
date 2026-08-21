@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from '../lib/realtimeFirestore';
 import { db, auth } from '../lib/firebase';
 import { cn } from '../lib/utils';
 import { Loader2, CheckCircle2 } from 'lucide-react';

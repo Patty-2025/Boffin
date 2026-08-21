@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
-import { auth, googleProvider, appleProvider, facebookProvider } from '../lib/firebase';
+import { auth, authPersistenceReady, googleProvider, appleProvider, facebookProvider } from '../lib/firebase';
 import { 
   signInWithPopup, 
   signInWithEmailAndPassword,
   sendPasswordResetEmail
 } from 'firebase/auth';
+import { collection, getDocs, query, where } from '../lib/realtimeFirestore';
+import { db } from '../lib/firebase';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -20,16 +22,30 @@ export default function Login() {
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get('redirect');
 
-  const handleAuthSuccess = () => {
-    navigate('/dashboard');
+  const handleAuthSuccess = async () => {
+    if (redirect === 'order') {
+      navigate('/order');
+      return;
+    }
+
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      navigate('/dashboard');
+      return;
+    }
+
+    const ordersSnapshot = await getDocs(query(collection(db, 'orders'), where('userId', '==', currentUser.uid)));
+    navigate(ordersSnapshot.empty ? '/portal/place-order' : '/dashboard');
   };
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
     setError(null);
     try {
+      await authPersistenceReady;
       await signInWithPopup(auth, googleProvider);
-      handleAuthSuccess();
+      await auth.currentUser?.getIdToken(true);
+      await handleAuthSuccess();
     } catch (err: any) {
       setError(err.message || 'Failed to sign in with Google');
     } finally {
@@ -41,8 +57,10 @@ export default function Login() {
     setIsLoading(true);
     setError(null);
     try {
+      await authPersistenceReady;
       await signInWithPopup(auth, appleProvider);
-      handleAuthSuccess();
+      await auth.currentUser?.getIdToken(true);
+      await handleAuthSuccess();
     } catch (err: any) {
       setError(err.message || 'Failed to sign in with Apple');
     } finally {
@@ -54,8 +72,10 @@ export default function Login() {
     setIsLoading(true);
     setError(null);
     try {
+      await authPersistenceReady;
       await signInWithPopup(auth, facebookProvider);
-      handleAuthSuccess();
+      await auth.currentUser?.getIdToken(true);
+      await handleAuthSuccess();
     } catch (err: any) {
       setError(err.message || 'Failed to sign in with Facebook');
     } finally {
@@ -70,8 +90,10 @@ export default function Login() {
     setInfoMsg(null);
 
     try {
+      await authPersistenceReady;
       await signInWithEmailAndPassword(auth, email, password);
-      handleAuthSuccess();
+      await auth.currentUser?.getIdToken(true);
+      await handleAuthSuccess();
     } catch (err: any) {
       setError(err.message || 'Failed to log in. Please check your credentials.');
     } finally {

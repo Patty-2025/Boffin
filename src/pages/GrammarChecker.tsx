@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { GoogleGenAI, Type } from '@google/genai';
-import { doc, getDoc, setDoc, updateDoc, increment } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc, increment } from '../lib/realtimeFirestore';
 import { db } from '../lib/firebase';
 import { Link, useNavigate } from 'react-router-dom';
 import TrustedLogos from '../components/TrustedLogos';

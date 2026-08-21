@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { db } from '../lib/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from '../lib/realtimeFirestore';
 import { Mail, Sparkles, Loader2, CheckCircle2, ShieldCheck, Gift } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, serverTimestamp, setDoc } from '../lib/realtimeFirestore';
 import { db } from '../lib/firebase';
 import { useAuth } from '../context/AuthContext';
+import PortalPageHeader from '../components/PortalPageHeader';
 import { 
   Briefcase, FlaskConical, Wrench, Calculator, Scale, 
   HeartPulse, Monitor, Hash, Book, Layout, CircleDollarSign, Magnet, Dna, 
@@ -132,6 +133,8 @@ const ALL_COUNTRIES = [
 
 export default function Profile() {
   const { user } = useAuth();
+  const [countrySearch, setCountrySearch] = useState('');
+  const [showCountrySuggestions, setShowCountrySuggestions] = useState(false);
   
   const [profile, setProfile] = useState<UserProfile>({
     name: '',
@@ -158,6 +161,13 @@ export default function Profile() {
   const [showUniSuggestions, setShowUniSuggestions] = useState(false);
   const [isFetchingUnis, setIsFetchingUnis] = useState(false);
   const [isAvatarPickerOpen, setIsAvatarPickerOpen] = useState(false);
+  const matchingCountries = ALL_COUNTRIES.filter((country) => country.name.toLowerCase().includes(countrySearch.trim().toLowerCase())).slice(0, 10);
+
+  const selectCountry = (country: { name: string; code: string }) => {
+    setProfile((current) => ({ ...current, country: country.name, phoneCode: country.code }));
+    setCountrySearch(country.name);
+    setShowCountrySuggestions(false);
+  };
   const [showCourseSuggestions, setShowCourseSuggestions] = useState(false);
   const courseSuggestions = COURSES.map(course => course.name).filter(course => course.toLowerCase().includes(profile.course.toLowerCase())).slice(0, 8);
   const avatarImage = profile.avatar.startsWith('data:') ? profile.avatar : `https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.avatar}&backgroundColor=eef1f5`;
@@ -229,7 +239,10 @@ export default function Profile() {
         const docSnap = await getDoc(docRef);
         
         if (docSnap.exists()) {
-          setProfile(prev => ({ ...prev, ...docSnap.data() }));
+          const savedProfile = docSnap.data();
+          const savedCountry = ALL_COUNTRIES.find((country) => country.name.toLowerCase() === String(savedProfile.country || '').toLowerCase());
+          setProfile(prev => ({ ...prev, ...savedProfile, phoneCode: savedCountry?.code || savedProfile.phoneCode || '' }));
+          setCountrySearch(savedProfile.country || '');
         } else {
           setProfile(prev => ({ ...prev, name: user.displayName || '' }));
         }
@@ -259,7 +272,7 @@ export default function Profile() {
     setSaveMessage('');
     try {
       const docRef = doc(db, 'studentProfiles', user.uid);
-      const profileToSave = { ...profile, userId: user.uid, email: user.email || '', emailVerified: user.emailVerified };
+      const profileToSave = { ...profile, userId: user.uid, email: user.email || '', emailVerified: user.emailVerified, updatedAt: serverTimestamp() };
       await Promise.race([
         setDoc(docRef, profileToSave, { merge: true }),
         new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Profile update timed out.')), 10000))
@@ -275,44 +288,38 @@ export default function Profile() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-7xl animate-in fade-in duration-500 pb-8 font-['Open_Sans',sans-serif]">
-      <div className="border-b border-slate-200 bg-[#d9e0ed] px-5 py-5 lg:px-8">
-        <h1 className="text-2xl font-bold text-slate-900">My profile</h1>
-        <p className="mt-1 text-sm text-slate-600">Keep your client details up to date for smoother orders and support.</p>
-      </div>
+    <div className="mx-auto mt-2 min-w-0 w-full max-w-7xl animate-in fade-in duration-500 pb-8 font-['Open_Sans',sans-serif]">
+      <PortalPageHeader title="My profile" description="Keep your client details up to date for smoother orders and support." />
 
-      <div className="border border-slate-200 bg-white px-5 py-6 lg:px-8">
+      <div className="min-w-0 border border-slate-200 bg-white px-5 py-6 lg:px-8">
       <div className="space-y-8">
         <section>
-          <h2 className="mb-4 text-lg font-bold text-slate-900">Personal and location</h2>
-          <div className="grid gap-4 md:grid-cols-3">
+          <h2 className="mb-4 text-lg font-bold text-slate-900">Personal (Contact) and Educational background</h2>
+          <div className="grid min-w-0 gap-4 md:grid-cols-4">
             <Field label="Your name"><input value={profile.name} onChange={e => setProfile({...profile, name: e.target.value})} className="w-full border border-slate-300 px-3 py-2 text-sm outline-none focus:border-[#0080d1]" /></Field>
             <Field label="Present residence" required={!profile.residence}><input value={profile.residence} onChange={e => setProfile({...profile, residence: e.target.value})} placeholder="Enter your city" className="w-full border border-slate-300 px-3 py-2 text-sm outline-none focus:border-[#0080d1]" /></Field>
-            <Field label="Country of origin" required={!profile.country}><input value={profile.country} onChange={e => setProfile({...profile, country: e.target.value})} placeholder="Country" className="w-full border border-slate-300 px-3 py-2 text-sm outline-none focus:border-[#0080d1]" /></Field>
-            <div className="flex items-center gap-3 border border-slate-200 bg-slate-50 px-3 py-2 md:col-span-3">
+            <div className="relative"><Field label="Country of origin" required={!profile.country}><input value={countrySearch} onFocus={() => setShowCountrySuggestions(true)} onChange={e => { setCountrySearch(e.target.value); setProfile(current => ({ ...current, country: e.target.value, phoneCode: '' })); setShowCountrySuggestions(true); }} onBlur={() => setTimeout(() => setShowCountrySuggestions(false), 150)} placeholder="Search country" className="w-full border border-slate-300 px-3 py-2 text-sm outline-none focus:border-[#0080d1]" /></Field>{showCountrySuggestions && countrySearch && matchingCountries.length > 0 && <div className="absolute left-0 right-0 top-full z-20 max-h-56 overflow-y-auto border border-slate-200 bg-white shadow-lg">{matchingCountries.map(country => <button type="button" key={country.name} onMouseDown={() => selectCountry(country)} className="block w-full border-b border-slate-100 px-3 py-2 text-left text-sm hover:bg-slate-50">{country.name} <span className="text-slate-500">{country.code}</span></button>)}</div>}</div>
+            <div className="flex min-w-0 flex-col items-center gap-2 self-start border border-slate-200 bg-slate-50 px-3 py-2 text-center md:col-span-1 md:row-span-2">
               <img src={avatarImage} alt="Selected avatar" className="h-12 w-12 object-cover" />
-              <div className="min-w-0"><p className="text-sm font-semibold text-slate-700">Profile photo</p><p className="text-xs text-slate-500">Upload a photo or choose an avatar.</p></div>
-              <button type="button" onClick={() => setIsAvatarPickerOpen(true)} className="ml-auto shrink-0 border border-[#0080d1] px-3 py-2 text-xs font-bold text-[#0080d1] hover:bg-sky-50">Upload or choose</button>
+              <div className="min-w-0"><p className="text-sm font-semibold text-slate-700">Profile photo</p><p className="text-xs text-slate-500">Upload or choose an avatar.</p></div>
+              <button type="button" onClick={() => setIsAvatarPickerOpen(true)} className="shrink-0 border border-[#0080d1] px-3 py-2 text-xs font-bold text-[#0080d1] hover:bg-sky-50">Upload or choose</button>
             </div>
-          </div>
-        </section>
-
-        <section>
-          <div className="mb-4"><h2 className="text-lg font-bold text-slate-900">Education</h2></div>
-          <div className="grid gap-4 md:grid-cols-3">
+            <section className="md:col-span-3">
+              <div className="grid min-w-0 gap-4 md:grid-cols-3">
             <div className="relative md:col-span-2"><Field label="University" required={!profile.university}><input value={profile.university} onFocus={() => setShowUniSuggestions(true)} onChange={e => { setProfile({...profile, university: e.target.value}); setShowUniSuggestions(true); }} onBlur={() => setTimeout(() => setShowUniSuggestions(false), 150)} placeholder="Type a university name" className="w-full border border-slate-300 px-3 py-2 text-sm outline-none focus:border-[#0080d1]" /></Field>{showUniSuggestions && profile.university.length >= 2 && <div className="absolute left-0 right-0 top-full z-20 max-h-56 overflow-y-auto border border-slate-200 bg-white shadow-lg">{isFetchingUnis ? <p className="px-3 py-3 text-sm text-slate-500">Searching global universities...</p> : uniSuggestions.map(uni => <button type="button" key={uni} onMouseDown={() => { setProfile({...profile, university: uni}); setShowUniSuggestions(false); }} className="block w-full border-b border-slate-100 px-3 py-2 text-left text-sm hover:bg-slate-50">{uni}</button>)}</div>}</div>
             <div className="relative"><Field label="Course enrolled"><input value={profile.course} onFocus={() => setShowCourseSuggestions(true)} onChange={e => { setProfile({...profile, course: e.target.value}); setShowCourseSuggestions(true); }} onBlur={() => setTimeout(() => setShowCourseSuggestions(false), 150)} placeholder="Type your course" className="w-full border border-slate-300 px-3 py-2 text-sm outline-none focus:border-[#0080d1]" /></Field>{showCourseSuggestions && profile.course && courseSuggestions.length > 0 && <div className="absolute left-0 right-0 top-full z-20 border border-slate-200 bg-white shadow-lg">{courseSuggestions.map(course => <button type="button" key={course} onMouseDown={() => { setProfile({...profile, course}); setShowCourseSuggestions(false); }} className="block w-full border-b border-slate-100 px-3 py-2 text-left text-sm hover:bg-slate-50">{course}</button>)}</div>}</div>
             <Field label="Year started"><input type="number" value={profile.yearStarted} onChange={e => setProfile({...profile, yearStarted: e.target.value ? Number(e.target.value) : ''})} placeholder="YYYY" className="w-full border border-slate-300 px-3 py-2 text-sm outline-none focus:border-[#0080d1]" /></Field>
             <Field label="Current year"><input type="number" value={profile.currentYear} onChange={e => setProfile({...profile, currentYear: e.target.value ? Number(e.target.value) : ''})} placeholder="YYYY" className="w-full border border-slate-300 px-3 py-2 text-sm outline-none focus:border-[#0080d1]" /></Field>
             <Field label="Year ending"><input type="number" value={profile.yearEnding} onChange={e => setProfile({...profile, yearEnding: e.target.value ? Number(e.target.value) : ''})} placeholder="YYYY" className="w-full border border-slate-300 px-3 py-2 text-sm outline-none focus:border-[#0080d1]" /></Field>
+              </div>
+            </section>
           </div>
         </section>
 
         <section>
-          <h2 className="mb-4 text-lg font-bold text-slate-900">Contact details</h2>
-          <div className="grid gap-4 md:grid-cols-3">
-            <Field label="Phone number" required={!profile.phone}><div className="flex gap-2"><select value={profile.phoneCode} onChange={e => setProfile({...profile, phoneCode: e.target.value})} className="w-1/3 border border-slate-300 px-2 py-2 text-sm outline-none focus:border-[#0080d1]"><option value="">Code</option>{ALL_COUNTRIES.map(c => <option key={`p1-${c.name}`} value={`${c.name} (${c.code})`}>{c.code}</option>)}</select><input value={profile.phone} onChange={e => setProfile({...profile, phone: e.target.value})} placeholder="Enter number" className="w-2/3 border border-slate-300 px-3 py-2 text-sm outline-none focus:border-[#0080d1]" /></div></Field>
-            <Field label="WhatsApp updates"><button type="button" onClick={() => setProfile({...profile, whatsappOptIn: !profile.whatsappOptIn})} className={`w-full border px-3 py-2 text-left text-sm font-semibold ${profile.whatsappOptIn ? 'border-emerald-500 bg-emerald-50 text-emerald-700' : 'border-slate-300 text-slate-600'}`}>{profile.whatsappOptIn ? 'Enabled' : 'Disabled'}</button></Field>
+          <div className="grid min-w-0 gap-4 md:grid-cols-3">
+            <Field label="Phone number" required={!profile.phone}><div className="flex min-w-0 gap-2"><input value={profile.phoneCode || 'Select country'} readOnly className="min-w-0 w-1/3 border border-slate-300 bg-slate-50 px-2 py-2 text-sm outline-none" /><input value={profile.phone} onChange={e => setProfile({...profile, phone: e.target.value})} placeholder="Enter number" className="min-w-0 w-2/3 border border-slate-300 px-3 py-2 text-sm outline-none focus:border-[#0080d1]" /></div></Field>
+            <Field label="Email address"><input type="email" value={user?.email || ''} readOnly className="w-full border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-600 outline-none" /></Field>
           </div>
         </section>
 
@@ -326,5 +333,5 @@ export default function Profile() {
 }
 
 function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
-  return <label className="block text-sm font-semibold text-slate-700">{label}{required && <span className="ml-1 text-red-500">!</span>}<span className="mt-1 block">{children}</span></label>;
+  return <label className="block min-w-0 text-sm font-semibold text-slate-700">{label}{required && <span className="ml-1 text-red-500">!</span>}<span className="mt-1 block min-w-0">{children}</span></label>;
 }

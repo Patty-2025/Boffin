@@ -20,7 +20,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from '../lib/realtimeFirestore';
 import { db } from '../lib/firebase';
 import { useAuth } from '../context/AuthContext';
 
@@ -99,9 +99,11 @@ export default function NewAssignment() {
       // Simulate payment delay
       await new Promise(r => setTimeout(r, 1500));
       // Update order status in Firestore
-      const { doc, updateDoc, addDoc, collection } = await import('firebase/firestore');
+      const { doc, updateDoc, addDoc, collection } = await import('../lib/realtimeFirestore');
       await updateDoc(doc(db, 'orders', orderId), {
-        status: 'paid',
+        status: 'in_progress',
+        paymentStatus: 'paid',
+        paidAt: new Date().toISOString(),
         updatedAt: serverTimestamp()
       });
 

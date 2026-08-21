@@ -1,124 +1,102 @@
-import React from 'react';
-import { Search, FileText, Clock, CheckCircle2, MessageSquare, Download, Upload, Plus } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Award, CheckCircle2, Clock3, FileText, Headphones, MessageSquare, Wallet } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { collection, doc, onSnapshot, query, where } from '../lib/realtimeFirestore';
+import { useAuth } from '../context/AuthContext';
+import { db } from '../lib/firebase';
+
+type ClientOrder = {
+  id: string;
+  topic?: string;
+  paperType?: string;
+  serviceType?: string;
+  pages?: number;
+  deadline?: string;
+  deadlineDate?: string;
+  totalCost?: number;
+  status?: string;
+  paymentStatus?: string;
+  paidAt?: any;
+  solutionOffered?: boolean;
+  solutionDelivered?: boolean;
+  deliveredAt?: any;
+  deliveryUrl?: string;
+};
+
+const statusLabels: Record<string, string> = {
+  completed: 'Completed',
+  in_progress: 'In progress',
+  pending: 'Pending',
+  paid: 'In progress',
+  cancelled: 'Cancelled'
+};
+
+const hasSolution = (order: ClientOrder) => Boolean(order.solutionOffered || order.solutionDelivered || order.deliveredAt || order.deliveryUrl || order.status === 'completed');
+const displayStatus = (order: ClientOrder) => !hasSolution(order) && (order.status === 'paid' || order.status === 'in_progress' || order.paymentStatus === 'paid' || order.paidAt) ? 'in_progress' : order.status || '';
 
 export default function Dashboard() {
-  const orders = [
-    { id: '#ORD-98234', title: 'Calculus III Problem Sets', status: 'In Progress', due: 'Tomorrow, 5:00 PM', progress: 65 },
-    { id: '#ORD-98110', title: 'Shakespeare Analysis Essay', status: 'Completed', due: 'Delivered', progress: 100 },
-    { id: '#ORD-97880', title: 'Macroeconomics term paper', status: 'Completed', due: 'Delivered', progress: 100 },
-  ];
+  const { user } = useAuth();
+  const [orders, setOrders] = useState<ClientOrder[]>([]);
+  const [balance, setBalance] = useState(0);
+  const [loyaltyPoints, setLoyaltyPoints] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [orderPage, setOrderPage] = useState(1);
 
+  useEffect(() => {
+    if (!user) return;
+    let loadedSources = 0;
+    const markLoaded = () => { loadedSources += 1; if (loadedSources >= 2) setLoading(false); };
+    const ordersUnsubscribe = onSnapshot(query(collection(db, 'orders'), where('userId', '==', user.uid)), (snapshot) => {
+      setOrders(snapshot.docs.map((document: any) => ({ id: document.id, ...document.data() })));
+      markLoaded();
+    }, () => setLoading(false));
+    const profileUnsubscribe = onSnapshot(doc(db, 'studentProfiles', user.uid), (profileSnapshot) => {
+      if (profileSnapshot.exists()) {
+        const profile = profileSnapshot.data();
+        setBalance(Number(profile.balance) || 0);
+        setLoyaltyPoints(Number(profile.loyaltyPoints) || 0);
+      }
+      markLoaded();
+    }, () => setLoading(false));
+    return () => { ordersUnsubscribe(); profileUnsubscribe(); };
+  }, [user]);
+
+  const activeOrders = orders.filter((order) => displayStatus(order) !== 'completed' && displayStatus(order) !== 'cancelled');
+  const completedOrders = orders.filter((order) => order.status === 'completed');
+  const ordersPerPage = 10;
+  const totalOrderPages = Math.max(1, Math.ceil(orders.length / ordersPerPage));
+  const visibleOrders = orders.slice((orderPage - 1) * ordersPerPage, orderPage * ordersPerPage);
   return (
-    <main className="pt-[80px] bg-slate-50 min-h-screen">
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        
-        {/* Dashboard Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-           <div>
-             <h1 className="text-3xl font-extrabold text-slate-900">Welcome back, Student!</h1>
-             <p className="text-slate-500 mt-1">Here is the status of your current assignments and documents.</p>
-           </div>
-           <button className="bg-gradient-to-r from-blue-700 to-emerald-600 hover:from-emerald-600 hover:to-blue-700 text-white font-bold py-3 px-6 rounded shadow-md flex items-center gap-2 transition-colors">
-              <Plus size={20} />
-              New Order
-           </button>
+    <div className="mx-auto w-full max-w-7xl space-y-4 animate-in fade-in duration-500">
+      <section className="grid gap-3 border border-slate-200 bg-slate-50 p-5 sm:grid-cols-2 lg:grid-cols-4" aria-label="Client summary">
+        <SummaryCard label="Active orders" value={loading ? '...' : String(activeOrders.length)} icon={<Clock3 size={20} />} tone="text-[#0080d1]" />
+        <SummaryCard label="Completed solutions" value={loading ? '...' : String(completedOrders.length)} icon={<CheckCircle2 size={20} />} tone="text-emerald-600" />
+        <SummaryCard label="Wallet balance" value={`$${balance.toFixed(2)}`} icon={<Wallet size={20} />} tone="text-amber-600" />
+        <SummaryCard label="Loyalty points" value={String(loyaltyPoints)} icon={<Award size={20} />} tone="text-[#13bdb0]" />
+      </section>
+
+      <section className="-mt-2 grid gap-3 xl:grid-cols-[minmax(0,1fr)_calc((100%-36px)/4)]">
+        <div className="border border-slate-200 bg-white">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 p-5"><div><h2 className="flex items-center gap-2 text-lg font-black text-slate-900"><FileText size={20} className="text-[#0080d1]" /> Recent orders</h2><p className="mt-1 text-xs text-slate-500">Your latest order activity appears here.</p></div><Link to="/portal/track" className="text-xs font-bold text-[#0080d1] hover:underline">View all orders</Link></div>
+          {loading ? <p className="p-8 text-center text-sm text-slate-500">Loading your orders...</p> : orders.length === 0 ? <div className="p-8 text-center"><p className="text-sm font-bold text-slate-700">No orders yet</p><Link to="/portal/place-order" className="mt-4 inline-flex bg-[#0080d1] px-4 py-2 text-sm font-bold text-white">Start your first order</Link></div> : <><div className="overflow-x-auto"><div className="min-w-[900px]"><div className="grid grid-cols-[0.35fr_1.1fr_1.5fr_1.2fr_0.5fr_1fr_1fr_0.8fr] gap-3 border-b border-slate-200 bg-slate-50 px-4 py-3 text-[10px] font-bold uppercase tracking-wide text-slate-500"><span>#</span><span>Order ID</span><span>Topic</span><span>Service</span><span>Pages</span><span>Deadline</span><span>Status</span><span>Total</span></div><div className="divide-y divide-slate-100">{visibleOrders.map((order, index) => <div key={order.id} className="grid grid-cols-[0.35fr_1.1fr_1.5fr_1.2fr_0.5fr_1fr_1fr_0.8fr] items-center gap-3 px-4 py-4 text-sm"><span className="text-xs text-slate-400">{(orderPage - 1) * ordersPerPage + index + 1}</span><Link to={`/portal/track?orderId=${encodeURIComponent(order.id)}`} className="font-mono text-[10px] font-bold text-[#0080d1] hover:underline">#{order.id.slice(-8).toUpperCase()}</Link><span className="truncate font-medium text-slate-800">{order.topic || order.paperType || 'Untitled order'}</span><span className="truncate text-xs text-slate-600">{order.serviceType || order.paperType || '-'}</span><span className="text-slate-600">{order.pages || '-'}</span><span className="text-xs text-slate-600">{formatDeadline(order.deadlineDate || order.deadline)}</span><span className="inline-flex w-fit items-center gap-1 bg-slate-100 px-2.5 py-1 text-[10px] font-bold uppercase text-slate-600">{order.status === 'completed' ? <CheckCircle2 size={12} /> : <Clock3 size={12} />}{statusLabels[order.status || ''] || 'Processing'}</span><span className="text-xs font-semibold text-slate-700">{typeof order.totalCost === 'number' ? `$${order.totalCost.toFixed(2)}` : '-'}</span></div>)}</div></div></div><div className="flex items-center justify-between border-t border-slate-200 px-4 py-3"><span className="text-xs text-slate-500">Showing {(orderPage - 1) * ordersPerPage + 1}-{Math.min(orderPage * ordersPerPage, orders.length)} of {orders.length} orders</span><div className="flex items-center gap-2"><button type="button" disabled={orderPage === 1} onClick={() => setOrderPage((page) => Math.max(1, page - 1))} className="border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 disabled:cursor-not-allowed disabled:opacity-40">Previous</button><span className="text-xs text-slate-500">Page {orderPage} of {totalOrderPages}</span><button type="button" disabled={orderPage === totalOrderPages} onClick={() => setOrderPage((page) => Math.min(totalOrderPages, page + 1))} className="border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 disabled:cursor-not-allowed disabled:opacity-40">Next</button></div></div></>}
         </div>
 
-        {/* Stats Row */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-            <h4 className="text-slate-500 text-sm font-bold uppercase tracking-wider mb-2">Active Orders</h4>
-            <div className="text-3xl font-extrabold text-slate-900">1</div>
-          </div>
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-            <h4 className="text-slate-500 text-sm font-bold uppercase tracking-wider mb-2">Completed</h4>
-            <div className="text-3xl font-extrabold text-slate-900">12</div>
-          </div>
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-            <h4 className="text-slate-500 text-sm font-bold uppercase tracking-wider mb-2">Wallet Balance</h4>
-            <div className="text-3xl font-extrabold text-green-600">$45.00</div>
-          </div>
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 bg-gradient-to-br from-amber-50 to-orange-50 border-amber-200">
-            <h4 className="text-amber-800 text-sm font-bold uppercase tracking-wider mb-2">Rewards Tier</h4>
-            <div className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-emerald-600 flex items-center gap-2">Gold Member</div>
-          </div>
-        </div>
-
-        {/* Orders List */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-          <div className="p-6 border-b border-slate-100 flex justify-between items-center">
-            <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-               <FileText size={20} className="text-emerald-500" /> Recent Orders
-            </h2>
-            <div className="relative">
-               <input type="text" placeholder="Search orders..." className="pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded text-sm focus:ring-2 focus:ring-amber-500 outline-none" />
-               <Search size={16} className="absolute left-3 top-2.5 text-slate-400" />
-            </div>
-          </div>
-          
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider">
-                  <th className="p-4 font-bold">Order ID / Title</th>
-                  <th className="p-4 font-bold">Status</th>
-                  <th className="p-4 font-bold">Deadline</th>
-                  <th className="p-4 font-bold text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {orders.map(order => (
-                  <tr key={order.id} className="hover:bg-slate-50/50 transition-colors">
-                    <td className="p-4">
-                      <div className="font-bold text-slate-900">{order.id}</div>
-                      <div className="text-sm text-slate-500">{order.title}</div>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex items-center gap-2">
-                        {order.status === 'Completed' ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-green-100 text-green-700 text-xs font-bold">
-                            <CheckCircle2 size={12} /> {order.status}
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-blue-100 text-blue-700 text-xs font-bold">
-                            <Clock size={12} /> {order.status}
-                          </span>
-                        )}
-                      </div>
-                      {order.progress < 100 && (
-                        <div className="w-32 h-1.5 bg-slate-200 rounded mt-2 overflow-hidden">
-                          <div className="h-full bg-blue-500" style={{ width: `${order.progress}%` }}></div>
-                        </div>
-                      )}
-                    </td>
-                    <td className="p-4">
-                      <span className="text-sm text-slate-600 font-medium">{order.due}</span>
-                    </td>
-                    <td className="p-4 text-right">
-                       <div className="flex justify-end gap-2">
-                         <button className="p-2 text-slate-400 hover:text-blue-700 hover:bg-amber-50 rounded transition-colors" title="Message Expert">
-                           <MessageSquare size={18} />
-                         </button>
-                         {order.status === 'Completed' && (
-                           <button className="p-2 text-slate-400 hover:text-green-600 hover:bg-green-50 rounded transition-colors" title="Download Final Paper">
-                             <Download size={18} />
-                           </button>
-                         )}
-                         {order.status === 'In Progress' && (
-                           <button className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors" title="Upload Files">
-                             <Upload size={18} />
-                           </button>
-                         )}
-                       </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-      </div>
-    </main>
+        <div className="border border-slate-200 bg-white p-5"><h2 className="text-lg font-black text-slate-900">Quicklinks</h2><div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-1"><PortalShortcut to="/portal/track" icon={<FileText size={24} />} label="Track your order" /><PortalShortcut to="/portal/completed" icon={<CheckCircle2 size={24} />} label="Completed solutions" /><PortalShortcut to="/portal/finances" icon={<Wallet size={24} />} label="Balance and finances" /><PortalShortcut to="/portal/loyalty" icon={<Award size={24} />} label="Loyalty points" /><PortalShortcut to="/contact-us" icon={<Headphones size={24} />} label="Contact support" /></div></div>
+      </section>
+    </div>
   );
+}
+
+function SummaryCard({ label, value, icon, tone }: { label: string; value: string; icon: React.ReactNode; tone: string }) {
+  return <div className="flex items-center gap-3 border border-slate-200 bg-white px-4 py-3.5 shadow-sm"><div className={`flex h-10 w-10 shrink-0 items-center justify-center bg-slate-50 ${tone}`}>{icon}</div><div className="min-w-0"><p className="truncate text-[11px] font-bold uppercase tracking-wide text-slate-500">{label}</p><p className="mt-0.5 text-xl font-black leading-tight text-slate-900">{value}</p></div></div>;
+}
+
+function PortalShortcut({ to, icon, label }: { to: string; icon: React.ReactNode; label: string }) {
+  return <Link to={to} className="flex items-center gap-3 border border-slate-200 px-3 py-3 text-sm font-normal text-slate-700 transition hover:border-[#0080d1] hover:text-[#0080d1]">{icon}{label}</Link>;
+}
+
+function formatDeadline(value?: string) {
+  if (!value) return '-';
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? value : date.toLocaleDateString();
 }

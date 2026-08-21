@@ -23,13 +23,13 @@ import {
 } from 'lucide-react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { ALL_SUBJECTS } from '../constants/subjects';
-import { addDoc, collection, doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection, doc, setDoc, serverTimestamp } from '../lib/realtimeFirestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { db, auth, storage } from '../lib/firebase';
 import StripeCheckoutForm from '../components/StripeCheckoutForm';
 import ErrorBoundary from '../components/ErrorBoundary';
 import writersData from '../data/topWriters.json';
-import { POINTS_PER_REFERRAL, userIdFromReferralCode } from '../lib/loyalty';
+import { fetchLoyaltySettings, userIdFromReferralCode } from '../lib/loyalty';
 
 interface UploadedFile {
   name: string;
@@ -214,6 +214,7 @@ export default function Order() {
       const uid = auth.currentUser ? auth.currentUser.uid : 'guest_' + Date.now();
       const referralCode = localStorage.getItem('boffinReferralCode') || '';
       const referrerId = userIdFromReferralCode(referralCode);
+      const loyaltySettings = await fetchLoyaltySettings();
 
       const uploadedAttachments = [];
       for (const f of formData.files) {
@@ -249,7 +250,9 @@ export default function Order() {
         level: formData.academicLevel,
         pages: formData.pages,
         deadline: formData.urgency,
-        status: paymentId ? 'paid' : 'pending',
+        status: paymentId ? 'in_progress' : 'pending',
+        paymentStatus: paymentId ? 'paid' : 'unpaid',
+        paidAt: paymentId ? new Date().toISOString() : null,
         paymentMethod: 'Stripe',
         paymentId: paymentId || 'pi_pending',
         referralCode: referrerId && referrerId !== uid ? referralCode : null,
@@ -271,7 +274,7 @@ export default function Order() {
       });
 
       if (referrerId && referrerId !== uid && paymentId) {
-        await addDoc(collection(db, 'referralEvents'), { referrerId, referredUserId: uid, orderId: orderRef.id, points: POINTS_PER_REFERRAL, status: 'pending', createdAt: serverTimestamp() });
+        await addDoc(collection(db, 'referralEvents'), { referrerId, referredUserId: uid, orderId: orderRef.id, points: loyaltySettings.pointsPerReferral, status: 'pending', createdAt: serverTimestamp() });
         localStorage.removeItem('boffinReferralCode');
       }
 
@@ -302,13 +305,10 @@ export default function Order() {
         </div>
       </header>
 
-      <main className="bg-[#F8F9FB] min-h-screen text-slate-800 font-sans pb-24 relative overflow-hidden">
-      
-      {/* Light Soft Background Illumination */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[350px] bg-gradient-to-b from-amber-500/10 via-teal-500/5 to-transparent blur-3xl pointer-events-none" />
+      <main className="min-h-screen bg-transparent pb-24 font-sans text-slate-800 relative overflow-hidden">
 
       {/* Page Header Header Container */}
-      <section className="pt-8 pb-10 px-4 text-center relative z-10 border-b border-slate-200/80 bg-white shadow-sm">
+      <section className="relative z-10 mt-2 border-b border-slate-200 bg-[#d9e0ed] px-4 pb-3 pt-2 text-center">
         <div className="max-w-4xl mx-auto space-y-3">
           
           <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-300 text-amber-900 text-xs font-black px-4 py-1.5 rounded-full shadow-sm">
@@ -316,7 +316,7 @@ export default function Order() {
             <span>50% NEW STUDENT DISCOUNT AUTOMATICALLY APPLIED</span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+          <h1 className="text-2xl font-black leading-tight tracking-tight text-slate-900 sm:text-3xl">
             Place Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700">Academic & Technical</span> Order
           </h1>
 
@@ -338,7 +338,7 @@ export default function Order() {
       <div className="max-w-6xl mx-auto mt-8 px-4 sm:px-6 relative z-10">
         
         {/* Step Progress Tracker */}
-        <div className="bg-white rounded-2xl border border-slate-200/90 p-4 mb-6 shadow-sm flex items-center justify-between overflow-x-auto">
+        <div className="mb-6 flex items-center justify-between overflow-x-auto border border-black bg-transparent p-4">
           {[
             { num: 1, label: 'Order Details', icon: FileText, desc: 'Subject, date & files' },
             { num: 2, label: 'Choose Your Expert', icon: Award, desc: 'Browse writers' },
@@ -392,7 +392,7 @@ export default function Order() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
           {/* Main Interactive Form Column */}
-          <div className="lg:col-span-8 bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-xl">
+          <div className="border border-black bg-transparent p-6 sm:p-8 lg:col-span-8">
             <div className="order-form-container">
               <AnimatePresence mode="wait">
                 
@@ -816,7 +816,7 @@ export default function Order() {
           {/* Right Column: Live Cost & Order Summary Card */}
           <div className="lg:col-span-4 space-y-4">
             
-            <div className="bg-white rounded-3xl border border-slate-200/90 p-6 shadow-xl sticky top-28">
+            <div className="sticky top-28 border border-black bg-transparent p-6">
               
               <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
                 <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">

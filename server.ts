@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import { createServer as createViteServer } from 'vite';
 import path from 'path';
@@ -52,7 +53,7 @@ async function startServer() {
         automatic_payment_methods: {
           enabled: true,
         },
-        setup_future_usage: 'off',
+        setup_future_usage: 'off_session',
       });
 
       res.json({ clientSecret: paymentIntent.client_secret });

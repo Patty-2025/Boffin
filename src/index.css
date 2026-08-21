@@ -389,6 +389,26 @@
   }
 }
 
+@keyframes orderProgressTruck {
+  from { transform: translateX(calc(-50% - 3px)); }
+  to { transform: translateX(calc(-50% + 3px)); }
+}
+
+.order-progress-truck {
+  animation: orderProgressTruck 6s ease-in-out infinite alternate;
+}
+
+@keyframes orderProgressFill {
+  from { background-position: 0% 50%; }
+  to { background-position: 200% 50%; }
+}
+
+.order-progress-fill {
+  background: linear-gradient(90deg, #0f9f92, #13bdb0, #9de36d, #13bdb0, #0f9f92);
+  background-size: 200% 100%;
+  animation: orderProgressFill 3.5s linear infinite;
+}
+
 .animate-appear-0 {
   animation: appearFade 0.4s ease-out forwards;
 }
@@ -1162,6 +1182,23 @@
 
 .font-display {
   font-family: 'Lato', 'Plus Jakarta Sans', sans-serif;
+}
+
+.track-order-page [class*="lg:grid-cols-[320px_1fr]"] {
+  align-items: start;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.track-order-page [class*="lg:grid-cols-[320px_1fr]"] > div:last-child {
+  padding: 1rem;
+}
+
+.track-order-page [class*="lg:grid-cols-[320px_1fr]"] > div:last-child > div:first-child {
+  display: none;
+}
+
+.track-order-page [class*="lg:grid-cols-[320px_1fr]"] > div:last-child a[href="/contact-us"] {
+  display: none;
 }
 
 /* Latest Order Review Cards & Tab Styling */
