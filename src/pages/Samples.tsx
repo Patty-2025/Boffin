@@ -319,7 +319,7 @@ export default function Samples() {
                 </div>
 
                 <div className="text-center">
-                  <Link to="/order" className="inline-block bg-gradient-to-r from-blue-700 to-emerald-600 hover:from-emerald-600 hover:to-blue-700 text-white px-10 py-3 rounded font-bold uppercase transition-all shadow-lg shadow-emerald-500/20">
+                  <Link to="/portal/place-order" className="inline-block bg-gradient-to-r from-blue-700 to-emerald-600 hover:from-emerald-600 hover:to-blue-700 text-white px-10 py-3 rounded font-bold uppercase transition-all shadow-lg shadow-emerald-500/20">
                     Order Now
                   </Link>
                 </div>
@@ -359,7 +359,7 @@ export default function Samples() {
                     <p className="text-lg md:text-xl text-[#2a3a5a] font-medium mb-12 opacity-80 max-w-2xl">
                       Get access to essay examples across 100+ topics and sub-topics!
                     </p>
-                    <Link to="/order" className="inline-block bg-gradient-to-br from-blue-700 to-emerald-800 text-white px-12 py-5 rounded-xl font-extrabold uppercase tracking-widest hover:bg-emerald-500 transition-all shadow-xl shadow-emerald-500/30 active:scale-95 transform hover:-translate-y-1">
+                    <Link to="/portal/place-order" className="inline-block bg-gradient-to-br from-blue-700 to-emerald-800 text-white px-12 py-5 rounded-xl font-extrabold uppercase tracking-widest hover:bg-emerald-500 transition-all shadow-xl shadow-emerald-500/30 active:scale-95 transform hover:-translate-y-1">
                       Order Now
                     </Link>
                   </div>

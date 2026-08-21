@@ -203,7 +203,7 @@ export default function CountryLanding({ countryName, countryCode, adjective, in
                 <p className="text-lg text-slate-800 text-center font-semibold mt-8">Getting our services will enable you to achieve higher grades and will give a boost to your academic life as well. We have already helped so many students in {countryName} achieve their goals!</p>
 
                 <div className="text-center pt-8">
-                   <a href="/order" className="inline-block bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black text-lg px-8 py-4 rounded-xl shadow-lg hover:scale-105 transition-transform">
+                   <a href="/portal/place-order" className="inline-block bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black text-lg px-8 py-4 rounded-xl shadow-lg hover:scale-105 transition-transform">
                      Order Now
                    </a>
                 </div>

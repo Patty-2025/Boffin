@@ -112,7 +112,7 @@ export default function ProfessionalWriters({
                 <div className="flex items-center gap-1 text-slate-700 font-medium"><MessageSquare size={13} className="text-amber-600" /> {writer.reviews} Reviews</div>
               </div>
 
-              <Link to="/order" className="w-full text-center bg-slate-900 hover:bg-slate-800 text-amber-400 font-black py-2.5 rounded-xl transition-all text-xs inline-block shadow-xs hover:shadow-md">
+              <Link to="/portal/place-order" className="w-full text-center bg-slate-900 hover:bg-slate-800 text-amber-400 font-black py-2.5 rounded-xl transition-all text-xs inline-block shadow-xs hover:shadow-md">
                 Talk to Expert
               </Link>
             </div>

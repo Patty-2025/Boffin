@@ -19,7 +19,7 @@ export const SecondaryCtaBanner: React.FC = () => {
         </h2>
 
         <Link 
-          to="/order" 
+          to="/portal/place-order"
           aria-label="Write my essay"
           className="button primary-orange inline-flex items-center justify-center bg-[#ff8b00] hover:bg-[#e07b00] text-white font-bold rounded-full px-8 py-3 text-[18px] leading-[20px] transition-colors shadow-md hover:shadow-lg shrink-0"
         >

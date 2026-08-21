@@ -29,7 +29,7 @@ export default function QuickEstimatorBar() {
   const discountedTotal = Math.round(estimatedTotal * 0.5);
 
   const handleProceed = () => {
-    navigate(`/order?level=${academicLevel}&urgency=${urgency}&type=${workType}&pages=${pages}`);
+    navigate(`/portal/place-order?level=${academicLevel}&urgency=${urgency}&type=${workType}&pages=${pages}`);
   };
 
   return (

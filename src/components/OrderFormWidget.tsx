@@ -57,7 +57,7 @@ export default function OrderFormWidget() {
       }
       await authPersistenceReady;
       await signInWithPopup(auth, provider);
-      navigate('/order');
+      navigate('/portal/place-order');
     } catch (err: any) {
       setAuthError(err.message || `${pendingProvider} sign in failed`);
     } finally {

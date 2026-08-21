@@ -93,7 +93,6 @@ import TermsModal from './components/TermsModal';
 import Footer from './components/Footer';
 import DiscountBanner from './components/DiscountBanner';
 import PortalLayout from './components/PortalLayout';
-import Order from './pages/Order';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLayout from './components/AdminLayout';
 import AdminRoute from './components/AdminRoute';
@@ -107,7 +106,7 @@ import { AuthProvider } from './context/AuthContext';
 
 function AppContent() {
   const location = useLocation();
-  const isLoginPage = location.pathname === '/login' || location.pathname === '/log-in.html' || location.pathname === '/signup' || location.pathname === '/registration.html' || location.pathname === '/registration' || location.pathname === '/register' || location.pathname === '/order' || location.pathname === '/portal/admin/login';
+  const isLoginPage = location.pathname === '/login' || location.pathname === '/log-in.html' || location.pathname === '/signup' || location.pathname === '/registration.html' || location.pathname === '/registration' || location.pathname === '/register' || location.pathname === '/portal/admin/login';
   const isAdminPage = location.pathname.startsWith('/admin') || location.pathname.startsWith('/portal/admin');
   const isPortalPage = location.pathname.startsWith('/portal') || location.pathname === '/dashboard' || location.pathname === '/order-placed';
 
@@ -124,7 +123,6 @@ function AppContent() {
           <Route path="/writers/*" element={<Writers />} />
           <Route path="/about-us" element={<About />} />
           <Route path="/hire" element={<HireWriter />} />
-          <Route path="/order" element={<ProtectedRoute><Order /></ProtectedRoute>} />
           <Route path="/order-placed" element={<Navigate to="/portal/track" replace />} />
           <Route path="/portal/admin/login" element={<AdminLogin />} />
           <Route path="/portal/admin/dashboard" element={<AdminRoute><AdminLayout><AdminPortalDashboard /></AdminLayout></AdminRoute>} />

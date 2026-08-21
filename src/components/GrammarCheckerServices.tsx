@@ -67,14 +67,14 @@ export default function GrammarCheckerServices() {
               <div className="mb-4 text-[#666666]">
                 <item.icon size={36} strokeWidth={1} />
               </div>
-              <Link to={`/order?subject=${encodeURIComponent(item.title)}`} className="hover:text-emerald-500 transition-colors mb-3">
+              <Link to={`/portal/place-order?subject=${encodeURIComponent(item.title)}`} className="hover:text-emerald-500 transition-colors mb-3">
                 <h3 className="text-lg font-bold text-[#333333] hover:text-emerald-500">{item.title}</h3>
               </Link>
               <p className="text-[#666666] text-sm leading-[1.6] flex-grow mb-4">
                 {item.desc}
               </p>
               <Link 
-                to={`/order?subject=${encodeURIComponent(item.title)}`}
+                to={`/portal/place-order?subject=${encodeURIComponent(item.title)}`}
                 className="text-xs font-extrabold text-emerald-600 hover:text-emerald-700 uppercase tracking-wider flex items-center gap-1 group mt-auto"
               >
                 <span>Order Help Now</span>

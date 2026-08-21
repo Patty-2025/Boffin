@@ -60,7 +60,7 @@ export default function ServicesGrid() {
             const Icon = service.icon;
             return (
               <a 
-                href={`/order?subject=${encodeURIComponent(service.name)}`}
+                href={`/portal/place-order?subject=${encodeURIComponent(service.name)}`}
                 key={index} 
                 className="flex items-center gap-4 p-3.5 border border-orange-300 hover:border-orange-500 hover:shadow-md transition-all group bg-white cursor-pointer rounded-xl"
               >

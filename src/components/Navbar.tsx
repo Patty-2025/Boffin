@@ -74,7 +74,7 @@ export default function Navbar() {
                   <div className="text-base font-extrabold text-slate-900 mb-4">Popular services</div>
                   <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-slate-600">
                     {SERVICE_MENU_ITEMS.map((service) => (
-                      <Link key={service.query} to={`/order?service=${encodeURIComponent(service.query)}`} className="text-sm hover:text-blue-500 hover:no-underline whitespace-nowrap">
+                      <Link key={service.query} to={`/portal/place-order?service=${encodeURIComponent(service.query)}`} className="text-sm hover:text-blue-500 hover:no-underline whitespace-nowrap">
                         {service.label}
                       </Link>
                     ))}
@@ -90,7 +90,7 @@ export default function Navbar() {
           <div className="flex gap-2 sm:gap-6 items-center">
             <Link 
               className="place-order md:px-6 px-4 py-2.5 bg-[#f47321] hover:bg-[#e05e10] text-white text-sm font-extrabold rounded-lg transition-colors whitespace-nowrap" 
-              to="/login?redirect=order"
+              to="/login?redirect=place-order"
             >
               Place order
             </Link>
@@ -177,7 +177,7 @@ export default function Navbar() {
 
               <div className="pt-6 border-t border-slate-100 space-y-3">
                 <Link 
-                  to="/login?redirect=order" 
+                  to="/login?redirect=place-order" 
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="block w-full bg-[#f47321] hover:bg-[#e05e10] text-white text-center py-3 font-extrabold rounded-lg transition-colors"
                 >

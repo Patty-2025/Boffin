@@ -124,7 +124,7 @@ export default function AssignmentHelp() {
             {/* Quick action buttons */}
             <div className="flex flex-wrap gap-3.5 pt-4">
               <Link 
-                to="/order" 
+                to="/portal/place-order"
                 className="bg-slate-900 hover:bg-slate-800 text-white font-extrabold px-7 py-3.5 rounded-xl text-xs sm:text-sm tracking-wider uppercase transition-colors"
               >
                 Order Now
@@ -224,7 +224,7 @@ export default function AssignmentHelp() {
                   <div className="text-2xl font-black text-amber-400">${totalAmount.toFixed(2)} <span className="text-[10px] text-white">USD</span></div>
                 </div>
                 <Link
-                  to={`/order?level=${educationLevel}&pages=${pages}&deadline=${deadline}&referencing=${encodeURIComponent(referencing)}`}
+                  to={`/portal/place-order?level=${educationLevel}&pages=${pages}&deadline=${deadline}&referencing=${encodeURIComponent(referencing)}`}
                   className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-xs uppercase px-4 py-2.5 rounded-lg transition-all active:scale-95"
                 >
                   Proceed Now
@@ -347,7 +347,7 @@ export default function AssignmentHelp() {
             Stop worrying about tight timelines; choose our express Boffin writing service and get your assignments finalized in just 6 hours with guaranteed quality, rigorous proofreading, and 100% original human-written material.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4 pt-3">
-            <Link to="/order" className="bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black px-6 py-3 rounded-xl text-xs sm:text-sm uppercase tracking-wider transition-all hover:scale-105">
+            <Link to="/portal/place-order" className="bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black px-6 py-3 rounded-xl text-xs sm:text-sm uppercase tracking-wider transition-all hover:scale-105">
               Order Now
             </Link>
             <button onClick={handleOpenWhatsApp} className="bg-white/10 hover:bg-white/15 border border-white/10 text-white font-extrabold px-6 py-3 rounded-xl text-xs sm:text-sm uppercase tracking-wider flex items-center gap-1.5 cursor-pointer">
@@ -411,7 +411,7 @@ export default function AssignmentHelp() {
             </div>
           </div>
           <div className="mt-8 pt-6 border-t border-slate-150 flex flex-col sm:flex-row gap-3">
-            <Link to="/order" className="bg-slate-900 hover:bg-slate-800 text-white text-center font-extrabold py-3.5 px-6 rounded-xl text-xs uppercase tracking-wider transition-colors">
+            <Link to="/portal/place-order" className="bg-slate-900 hover:bg-slate-800 text-white text-center font-extrabold py-3.5 px-6 rounded-xl text-xs uppercase tracking-wider transition-colors">
               Assign to Expert
             </Link>
             <button onClick={handleOpenWhatsApp} className="border border-slate-200 hover:bg-slate-50 text-slate-800 font-extrabold py-3.5 px-6 rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer">

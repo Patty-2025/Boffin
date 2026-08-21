@@ -8,6 +8,7 @@ import {
 } from 'firebase/auth';
 import { collection, getDocs, query, where } from '../lib/realtimeFirestore';
 import { db } from '../lib/firebase';
+import { getSafeAuthError } from '../lib/authError';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -23,8 +24,8 @@ export default function Login() {
   const redirect = searchParams.get('redirect');
 
   const handleAuthSuccess = async () => {
-    if (redirect === 'order') {
-      navigate('/order');
+    if (redirect === 'place-order') {
+      navigate('/portal/place-order');
       return;
     }
 
@@ -47,7 +48,7 @@ export default function Login() {
       await auth.currentUser?.getIdToken(true);
       await handleAuthSuccess();
     } catch (err: any) {
-      setError(err.message || 'Failed to sign in with Google');
+      setError(getSafeAuthError(err, 'Unable to sign in with Google.'));
     } finally {
       setIsLoading(false);
     }
@@ -62,7 +63,7 @@ export default function Login() {
       await auth.currentUser?.getIdToken(true);
       await handleAuthSuccess();
     } catch (err: any) {
-      setError(err.message || 'Failed to sign in with Apple');
+      setError(getSafeAuthError(err, 'Unable to sign in with Apple.'));
     } finally {
       setIsLoading(false);
     }
@@ -77,7 +78,7 @@ export default function Login() {
       await auth.currentUser?.getIdToken(true);
       await handleAuthSuccess();
     } catch (err: any) {
-      setError(err.message || 'Failed to sign in with Facebook');
+      setError(getSafeAuthError(err, 'Unable to sign in with Facebook.'));
     } finally {
       setIsLoading(false);
     }
@@ -95,7 +96,7 @@ export default function Login() {
       await auth.currentUser?.getIdToken(true);
       await handleAuthSuccess();
     } catch (err: any) {
-      setError(err.message || 'Failed to log in. Please check your credentials.');
+      setError(getSafeAuthError(err));
     } finally {
       setIsLoading(false);
     }
@@ -112,7 +113,7 @@ export default function Login() {
       await sendPasswordResetEmail(auth, email);
       setInfoMsg('Password reset email sent! Check your inbox.');
     } catch (err: any) {
-      setError(err.message || 'Failed to send password reset email.');
+      setError('If an account matches that email, reset instructions will be sent.');
     } finally {
       setIsLoading(false);
     }
@@ -286,7 +287,7 @@ export default function Login() {
 
                   <div className="bb-authLinks text-center text-sm text-slate-600 pt-3">
                     <span className="bb-noAccountText mr-1">Don’t have an account?</span>
-                    <Link to={redirect === 'order' ? '/signup?redirect=order' : '/signup'} className="bb-registrationBoldLink bb-link text-[#0080d1] font-bold hover:underline">Sign up</Link>
+                    <Link to={redirect === 'place-order' ? '/signup?redirect=place-order' : '/signup'} className="bb-registrationBoldLink bb-link text-[#0080d1] font-bold hover:underline">Sign up</Link>
                   </div>
                 </form>
               </div> 

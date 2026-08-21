@@ -57,7 +57,7 @@ export default function WordCounterServiceGrid() {
           {services.map((item, index) => (
             <div key={index} className="flex justify-center">
               <Link 
-                to={`/order?subject=${encodeURIComponent(item.title)}`}
+                to={`/portal/place-order?subject=${encodeURIComponent(item.title)}`}
                 className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col items-center text-center max-w-[240px] cursor-pointer"
               >
                 <div className="mb-3 text-slate-400 group-hover:text-emerald-500 transition-colors">

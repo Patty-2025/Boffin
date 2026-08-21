@@ -20,11 +20,10 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
   }
 
   if (!user) {
-    const loginPath = location.pathname === '/order' ? '/login?redirect=order' : '/login';
-    return <Navigate to={loginPath} state={{ from: location }} replace />;
+    return <Navigate to="/login?redirect=place-order" state={{ from: location }} replace />;
   }
 
-  const emailVerified = user.emailVerified || Boolean(sessionStorage.getItem(`boffinEmailVerified:${user.uid}`));
+  const emailVerified = user.emailVerified;
   if (!emailVerified && location.pathname !== '/dashboard' && location.pathname !== '/portal/dashboard' && location.pathname !== '/portal/place-order') {
     return <Navigate to="/dashboard" replace />;
   }

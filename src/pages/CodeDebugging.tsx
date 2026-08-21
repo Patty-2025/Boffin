@@ -170,7 +170,7 @@ export default function CodeDebugging() {
                   Within 15 minutes, get connected with an expert engineer who will review your code, point out errors, and guide you through solutions.
                 </p>
               </div>
-              <Link to="/order" className="bg-amber-600 hover:bg-amber-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm whitespace-nowrap shadow-md transition-colors">
+              <Link to="/portal/place-order" className="bg-amber-600 hover:bg-amber-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm whitespace-nowrap shadow-md transition-colors">
                 Find an Expert
               </Link>
             </div>

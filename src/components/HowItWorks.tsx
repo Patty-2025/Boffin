@@ -129,7 +129,7 @@ export default function HowItWorks({
         </div>
 
         <div className="mt-12 text-center">
-          <Link to="/order" className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-black py-4 px-9 rounded-xl cursor-pointer transition-all text-base shadow-lg shadow-amber-500/20 active:scale-95">
+          <Link to="/portal/place-order" className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-black py-4 px-9 rounded-xl cursor-pointer transition-all text-base shadow-lg shadow-amber-500/20 active:scale-95">
             <span>{buttonText}</span>
             <CheckCircle2 size={18} />
           </Link>
@@ -164,7 +164,7 @@ export default function HowItWorks({
             </div>
             
             <div className="text-center mt-12">
-              <Link to="/order" className="inline-block bg-slate-900 hover:bg-slate-800 text-amber-400 border border-slate-800 font-extrabold py-3.5 px-8 rounded-xl cursor-pointer transition-all text-sm shadow-md">
+              <Link to="/portal/place-order" className="inline-block bg-slate-900 hover:bg-slate-800 text-amber-400 border border-slate-800 font-extrabold py-3.5 px-8 rounded-xl cursor-pointer transition-all text-sm shadow-md">
                 {whyUsButtonText} &rarr;
               </Link>
             </div>

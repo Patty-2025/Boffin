@@ -505,7 +505,7 @@ export default function Home() {
                     </div>
 
                     <Link 
-                      to="/order"
+                      to="/portal/place-order"
                       className="block w-full py-2.5 bg-slate-950 hover:bg-teal-600 text-white text-center text-xs font-bold uppercase tracking-wider rounded-xl transition-all shadow-xs"
                     >
                       Assign writer
@@ -628,7 +628,7 @@ export default function Home() {
 
           <div className="flex justify-center mt-8">
             <Link 
-              to="/order" 
+              to="/portal/place-order"
               className="px-10 py-3.5 bg-amber-500 hover:bg-amber-600 active:scale-98 text-slate-950 font-bold uppercase tracking-wider text-sm rounded-full transition-all shadow-md hover:shadow-lg"
             >
               Hire writer
@@ -785,7 +785,7 @@ export default function Home() {
           </div>
           <div className="flex justify-center mt-8">
             <Link 
-              to="/order" 
+              to="/portal/place-order"
               className="animate-appear-0 flex items-center justify-center font-bold text-[18px] leading-[20px] bg-[#ff8b00] hover:bg-[#ff9a00] text-white rounded-[100px] px-[40px] py-[11px] w-fit mx-auto transition-colors"
             >
               Place an order
@@ -1197,7 +1197,7 @@ export default function Home() {
             Get assignment support to avoid stress and meet deadlines!
           </h2>
           <Link 
-            to="/order" 
+            to="/portal/place-order"
             aria-label="Try BoffinGlobal"
             className="flex items-center justify-center font-bold text-[18px] leading-[20px] bg-[#ff8b00] text-white hover:bg-[#ff9a00] border-[2px] border-solid border-[#ff8b00] hover:border-[#ff9a00] rounded-[100px] px-[40px] py-[11px] w-fit transition-colors shrink-0"
           >

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { auth, authPersistenceReady, googleProvider, appleProvider, facebookProvider } from '../lib/firebase';
-import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { ensureClientId } from '../lib/clientId';
 import { collection, getDocs, query, where } from '../lib/realtimeFirestore';
 import { db } from '../lib/firebase';
+import { getSafeAuthError } from '../lib/authError';
 
 export default function Registration() {
   const [searchParams] = useSearchParams();
@@ -42,8 +43,8 @@ export default function Registration() {
     } catch (error) {
       console.error('Client ID assignment skipped because Firestore is unavailable:', error);
     }
-    if (redirect === 'order') {
-      navigate('/order');
+    if (redirect === 'place-order') {
+      navigate('/portal/place-order');
       return;
     }
 
@@ -70,7 +71,7 @@ export default function Registration() {
       await signInWithPopup(auth, googleProvider);
       await handleAuthSuccess();
     } catch (err: any) {
-      setError(err.message || 'Failed to sign in with Google');
+      setError(getSafeAuthError(err, 'Unable to sign in with Google.'));
     } finally {
       setIsLoading(false);
     }
@@ -84,7 +85,7 @@ export default function Registration() {
       await signInWithPopup(auth, appleProvider);
       await handleAuthSuccess();
     } catch (err: any) {
-      setError(err.message || 'Failed to sign in with Apple');
+      setError(getSafeAuthError(err, 'Unable to sign in with Apple.'));
     } finally {
       setIsLoading(false);
     }
@@ -98,7 +99,7 @@ export default function Registration() {
       await signInWithPopup(auth, facebookProvider);
       await handleAuthSuccess();
     } catch (err: any) {
-      setError(err.message || 'Failed to sign in with Facebook');
+      setError(getSafeAuthError(err, 'Unable to sign in with Facebook.'));
     } finally {
       setIsLoading(false);
     }
@@ -122,7 +123,7 @@ export default function Registration() {
       } else {
         const generatedPassword = generatePassword();
         await createUserWithEmailAndPassword(auth, email, generatedPassword);
-        localStorage.setItem('boffinGeneratedPassword', generatedPassword);
+        await sendPasswordResetEmail(auth, email);
       }
       await handleAuthSuccess();
     } catch (err: any) {
@@ -137,10 +138,10 @@ export default function Registration() {
             setError('Account already exists for this email. Please enter your password or log in.');
           }
         } catch (loginErr: any) {
-          setError(loginErr.message || 'Account exists. Please enter your password to log in.');
+          setError(getSafeAuthError(loginErr, 'Unable to complete registration.'));
         }
       } else {
-        setError(err.message || 'Failed to register account');
+        setError(getSafeAuthError(err, 'Unable to create the account.'));
       }
     } finally {
       setIsLoading(false);
