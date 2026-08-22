@@ -27,6 +27,7 @@ export default function OrderFormWidget() {
 
   // Calculate pages
   const pagesCount = Math.max(1, Math.ceil(wordsQty / 275));
+  const placeOrderUrl = `/portal/place-order?pages=${pagesCount}&deadline=${encodeURIComponent(deadline)}`;
 
   // Handle words increment/decrement
   const handleDecrement = () => {
@@ -57,7 +58,7 @@ export default function OrderFormWidget() {
       }
       await authPersistenceReady;
       await signInWithPopup(auth, provider);
-      navigate('/portal/place-order');
+      navigate(placeOrderUrl);
     } catch (err: any) {
       setAuthError(err.message || `${pendingProvider} sign in failed`);
     } finally {
@@ -87,7 +88,7 @@ export default function OrderFormWidget() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    navigate(`/registration.html?email=${encodeURIComponent(email)}&words=${wordsQty}&deadline=${encodeURIComponent(deadline)}`);
+    navigate(`/registration.html?email=${encodeURIComponent(email)}&words=${wordsQty}&deadline=${encodeURIComponent(deadline)}&redirect=place-order`);
     setIsSubmitting(false);
   };
 

@@ -19,10 +19,8 @@ export default function PlaceOrder() {
     const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const displayName = user?.displayName || user?.email?.split('@')[0] || 'there';
-  const generatedPassword = localStorage.getItem('boffinGeneratedPassword');
-  const verificationKey = user?.uid ? `boffinEmailVerified:${user.uid}` : '';
   const [isWelcomeVisible, setIsWelcomeVisible] = useState(true);
-  const [isVerified, setIsVerified] = useState(Boolean(verificationKey && sessionStorage.getItem(verificationKey)) || Boolean(user?.emailVerified));
+  const [isVerified, setIsVerified] = useState(Boolean(user?.emailVerified));
   const [verificationCode, setVerificationCode] = useState('');
   const [verificationMessage, setVerificationMessage] = useState('');
   const [isSendingCode, setIsSendingCode] = useState(false);
@@ -34,8 +32,10 @@ export default function PlaceOrder() {
   const [discipline, setDiscipline] = useState('');
   const [disciplineSearch, setDisciplineSearch] = useState('');
   const [showDisciplineSuggestions, setShowDisciplineSuggestions] = useState(false);
-  const [pages, setPages] = useState(2);
-  const [deadline, setDeadline] = useState('');
+  const requestedPages = Number(searchParams.get('pages'));
+  const hasPendingLandingOrder = Number.isInteger(requestedPages) && requestedPages > 0 && requestedPages <= 500;
+  const [pages, setPages] = useState(hasPendingLandingOrder ? requestedPages : 2);
+  const [deadline, setDeadline] = useState(searchParams.get('deadline') || '');
   const [instructions, setInstructions] = useState('');
   const [showFullInstructions, setShowFullInstructions] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -230,8 +230,8 @@ export default function PlaceOrder() {
         setPaperTypeSearch(draft.paperType || 'Essay (any type)');
         setDiscipline(draft.discipline || '');
         setDisciplineSearch(draft.discipline || '');
-        setPages(draft.pages || 2);
-        setDeadline(draft.deadline || '');
+        if (!hasPendingLandingOrder) setPages(draft.pages || 2);
+        if (!searchParams.get('deadline')) setDeadline(draft.deadline || '');
         setInstructions(draft.instructions || '');
         setGoogleDriveLink(draft.googleDriveLink || '');
         setGoogleDriveItems(draft.googleDriveItems || []);
@@ -402,7 +402,6 @@ export default function PlaceOrder() {
       const response = await fetch('/api/verify-email-code', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: user.email, code: verificationCode }) });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || 'Verification failed.');
-      if (verificationKey) sessionStorage.setItem(verificationKey, 'true');
       setIsVerified(true);
       setVerificationMessage('Email verified successfully.');
     } catch (error) {

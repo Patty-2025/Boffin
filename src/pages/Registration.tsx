@@ -12,6 +12,8 @@ export default function Registration() {
   const initialEmail = searchParams.get('email') || '';
   const referralCode = searchParams.get('ref') || '';
   const redirect = searchParams.get('redirect');
+  const pendingPages = searchParams.get('pages') || String(Math.max(1, Math.ceil(Number(searchParams.get('words') || 275) / 275)));
+  const pendingDeadline = searchParams.get('deadline') || '';
 
   const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState('');
@@ -44,7 +46,7 @@ export default function Registration() {
       console.error('Client ID assignment skipped because Firestore is unavailable:', error);
     }
     if (redirect === 'place-order') {
-      navigate('/portal/place-order');
+      navigate(`/portal/place-order?pages=${encodeURIComponent(pendingPages)}&deadline=${encodeURIComponent(pendingDeadline)}`);
       return;
     }
 
