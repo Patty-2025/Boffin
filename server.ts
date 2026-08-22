@@ -3,9 +3,13 @@ import express from 'express';
 import { createServer as createViteServer } from 'vite';
 import path from 'path';
 import compression from 'compression';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import { z } from 'zod';
 import Stripe from 'stripe';
 import { calculatePrice } from './src/services/pricing';
 import { grammarCheck } from './src/services/grammarService';
+import { issueVerificationCode, verifyCode } from './server/security';
 
 const currentDirname = typeof __dirname !== 'undefined' ? __dirname : process.cwd();
 const SITE_URL = 'https://boffinglobalgroup.com';
@@ -13,10 +17,16 @@ const SITE_URL = 'https://boffinglobalgroup.com';
 async function startServer() {
   const app = express();
   const PORT = 3000;
+  app.set('trust proxy', 1);
+  app.use(helmet({ crossOriginEmbedderPolicy: false }));
+  app.use(express.json({ limit: '32kb' }));
+  app.use(rateLimit({ windowMs: 15 * 60 * 1000, limit: 300, standardHeaders: 'draft-7', legacyHeaders: false }));
+  const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 10, standardHeaders: 'draft-7', legacyHeaders: false, message: { error: 'Too many authentication attempts. Please try again later.' } });
+  const verificationLimiter = rateLimit({ windowMs: 60 * 60 * 1000, limit: 5, standardHeaders: 'draft-7', legacyHeaders: false, message: { error: 'Too many verification requests. Please try again later.' } });
+  const apiLimiter = rateLimit({ windowMs: 60 * 1000, limit: 30, standardHeaders: 'draft-7', legacyHeaders: false, message: { error: 'Too many requests. Please try again later.' } });
 
   // Compress all HTTP responses
   app.use(compression());
-  app.use(express.json());
 
   // --- CUSTOM API ROUTES ---
 
@@ -32,12 +42,17 @@ async function startServer() {
     return stripeClient;
   }
 
-  app.post('/api/create-payment-intent', async (req, res) => {
+  const paymentSchema = z.object({ amount: z.coerce.number().finite().positive().max(100000) });
+  const emailSchema = z.object({ email: z.string().trim().toLowerCase().email().max(254) });
+  const verificationSchema = emailSchema.extend({ code: z.string().trim().regex(/^\d{6}$/) });
+  const textSchema = z.object({ text: z.string().min(1).max(50000) });
+  const discountSchema = z.object({ pages: z.coerce.number().int().min(1).max(500), subject: z.string().trim().min(1).max(200), deadline: z.string().trim().min(1).max(100), discountCode: z.string().trim().max(100).optional() });
+
+  app.post('/api/create-payment-intent', apiLimiter, async (req, res) => {
     try {
-      const { amount } = req.body;
-      if (!amount) {
-        return res.status(400).json({ error: 'Amount is required' });
-      }
+      const parsed = paymentSchema.safeParse(req.body);
+      if (!parsed.success) return res.status(400).json({ error: 'A valid payment amount is required.' });
+      const { amount } = parsed.data;
 
       let stripe;
       try {
@@ -75,14 +90,13 @@ async function startServer() {
     return `WELCOME-${code}`;
   }
 
-  const emailVerificationCodes = new Map<string, { code: string; expiresAt: number }>();
-
-  app.post('/api/send-email-code', async (req, res) => {
-    const email = typeof req.body?.email === 'string' ? req.body.email.trim().toLowerCase() : '';
-    if (!email || !email.includes('@')) return res.status(400).json({ error: 'Valid email is required' });
-
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-    emailVerificationCodes.set(email, { code, expiresAt: Date.now() + 10 * 60 * 1000 });
+  app.post('/api/send-email-code', verificationLimiter, async (req, res) => {
+    const parsed = emailSchema.safeParse(req.body);
+    if (!parsed.success) return res.status(400).json({ error: 'Valid email is required.' });
+    const { email } = parsed.data;
+    let code: string;
+    try { code = await issueVerificationCode(email); }
+    catch (error) { if (error instanceof Error && error.message === 'RESEND_COOLDOWN') return res.status(429).json({ error: 'Please wait before requesting another code.' }); throw error; }
 
     const host = process.env.SMTP_HOST;
     const port = process.env.SMTP_PORT;
@@ -106,29 +120,25 @@ async function startServer() {
         return res.status(500).json({ error: 'We could not send the verification email.' });
       }
     } else {
-      console.warn(`[Email Simulation] Verification code for ${email}: ${code}`);
+      console.warn('[Email Simulation] SMTP is not configured; verification email was not sent.');
     }
 
+    return res.json({ success: true, message: 'If the address is eligible, a verification code has been sent.' });
+  });
+
+  app.post('/api/verify-email-code', verificationLimiter, async (req, res) => {
+    const parsed = verificationSchema.safeParse(req.body);
+    if (!parsed.success) return res.status(400).json({ error: 'That code is invalid or has expired.' });
+    const valid = await verifyCode(parsed.data.email, parsed.data.code);
+    if (!valid) return res.status(400).json({ error: 'That code is invalid or has expired.' });
     return res.json({ success: true });
   });
 
-  app.post('/api/verify-email-code', (req, res) => {
-    const email = typeof req.body?.email === 'string' ? req.body.email.trim().toLowerCase() : '';
-    const code = typeof req.body?.code === 'string' ? req.body.code.trim() : '';
-    const saved = emailVerificationCodes.get(email);
-    if (!saved || saved.expiresAt < Date.now() || saved.code !== code) {
-      return res.status(400).json({ error: 'That code is invalid or has expired.' });
-    }
-    emailVerificationCodes.delete(email);
-    return res.json({ success: true });
-  });
-
-  app.post('/api/subscribe', async (req, res) => {
+  app.post('/api/subscribe', apiLimiter, async (req, res) => {
     try {
-      const { email, code } = req.body;
-      if (!email || typeof email !== 'string' || !email.includes('@')) {
-        return res.status(400).json({ error: 'Valid email is required' });
-      }
+      const parsed = emailSchema.extend({ code: z.string().trim().max(100).optional() }).safeParse(req.body);
+      if (!parsed.success) return res.status(400).json({ error: 'Valid email is required.' });
+      const { email, code } = parsed.data;
 
       const uniqueCode = code || generateUniqueCode();
 
@@ -226,7 +236,7 @@ async function startServer() {
         console.log(`[HubSpot Simulation] Token not configured. Simulated syncing new contact: ${email} to HubSpot CRM list.`);
       }
 
-      res.json({ success: true, code: uniqueCode });
+      res.json({ success: true });
     } catch (error: any) {
       console.error('Subscription error:', error);
       res.status(500).json({ error: error instanceof Error ? error.message : 'Internal Server Error' });
@@ -236,7 +246,7 @@ async function startServer() {
   /**
    * Health Check API
    */
-  app.get('/api/health', (req, res) => {
+  app.get('/api/health', apiLimiter, (req, res) => {
     res.json({ status: 'ok', message: 'Assist Bridge API is running' });
   });
 
@@ -246,6 +256,7 @@ async function startServer() {
 Allow: /
 Disallow: /portal/
 Disallow: /dashboard
+Disallow: /admin/
 
 Sitemap: ${SITE_URL}/sitemap.xml`);
   });
@@ -261,10 +272,13 @@ Sitemap: ${SITE_URL}/sitemap.xml`);
           '/case-study-help', '/term-paper-help', '/powerpoint-help', '/thesis-help', '/coursework',
           '/essay-writing-service', '/essay-editing-service', '/mba-essay-writing-service', '/essay-help',
           '/research-proposal-service', '/research-paper-service', '/ghost-writer-service', '/dissertation-help-service',
-          '/programming-help-service', '/online-class-help-service',
+          '/programming-help-service', '/online-class-help-service', '/assignment-help', '/assignment-guidance',
+          '/code-debugging', '/data-analysis', '/data-analysis-services', '/engineering-simulations', '/engineering-services',
+          '/programming-services', '/business-services', '/solidworks', '/software-architecture', '/technical-documentation',
           '/plagiarism-checker', '/essay-typer', '/paraphrasing-tool', '/grammar-checker', '/essay-checker',
           '/factoring-calculator', '/word-counter', '/citation-generator', '/pdf-summarizer', '/other-tools',
           '/apa-citation', '/chicago-citation', '/harvard-citation', '/mla-citation', '/vancouver-citation', '/oxford-citation',
+          '/writers', '/blog', '/faq', '/pricing',
           '/ca', '/au', '/my', '/sg', '/hk', '/in', '/mv', '/uk', '/ie', '/nz', '/se', '/ae', '/sa', '/gh', '/qa', '/za', '/kw', '/om', '/me'
         ];
 
@@ -285,8 +299,10 @@ Sitemap: ${SITE_URL}/sitemap.xml`);
     });
   });
 
-  app.post('/api/sync-to-zoho', async (req, res) => {
-    const { orderDetails } = req.body;
+  app.post('/api/sync-to-zoho', apiLimiter, (req, res) => {
+    const parsed = z.object({ orderDetails: z.record(z.string(), z.unknown()).refine((value) => JSON.stringify(value).length <= 20000) }).safeParse(req.body);
+    if (!parsed.success) return res.status(400).json({ error: 'Valid order details are required.' });
+    const { orderDetails } = parsed.data;
     
     if (!process.env.ZOHO_CLIENT_ID || !process.env.ZOHO_CLIENT_SECRET || !process.env.ZOHO_REFRESH_TOKEN) {
       return res.status(500).json({ error: 'Zoho integration is not configured. Please contact support.' });
@@ -298,9 +314,10 @@ Sitemap: ${SITE_URL}/sitemap.xml`);
     res.json({ status: 'queued', message: 'Order sync to Zoho initiated' });
   });
 
-  app.post('/api/calculate-price', (req, res) => {
-    const { pages, subject, deadline, discountCode } = req.body;
-    if (!pages || !subject || !deadline) return res.status(400).json({ error: 'Missing requirements' });
+  app.post('/api/calculate-price', apiLimiter, (req, res) => {
+    const parsed = discountSchema.safeParse(req.body);
+    if (!parsed.success) return res.status(400).json({ error: 'Missing or invalid requirements.' });
+    const { pages, subject, deadline, discountCode } = parsed.data;
     
     const price = calculatePrice(pages, subject, new Date(deadline), discountCode);
     res.json({ totalPrice: price.toFixed(2) });
@@ -310,11 +327,10 @@ Sitemap: ${SITE_URL}/sitemap.xml`);
    * Word Counter API
    * Demonstrates a simple logical API
    */
-  app.post('/api/tools/word-count', (req, res) => {
-    const { text } = req.body;
-    if (!text || typeof text !== 'string') {
-      return res.status(400).json({ error: 'Text is required' });
-    }
+  app.post('/api/tools/word-count', apiLimiter, (req, res) => {
+    const parsed = textSchema.safeParse(req.body);
+    if (!parsed.success) return res.status(400).json({ error: 'Text is required and must be under 50,000 characters.' });
+    const { text } = parsed.data;
     
     const words = text.trim().split(/\s+/).filter(w => w.length > 0);
     const characters = text.length;
@@ -332,11 +348,10 @@ Sitemap: ${SITE_URL}/sitemap.xml`);
    * To follow pure frontend patterns, you'd call Gemini from the browser.
    * But here is how you structure a backend AI route!
    */
-  app.post('/api/tools/grammar-check', async (req, res) => {
-    const { text } = req.body;
-    if (!text || typeof text !== 'string') {
-      return res.status(400).json({ error: 'Text is required' });
-    }
+  app.post('/api/tools/grammar-check', apiLimiter, async (req, res) => {
+    const parsed = textSchema.safeParse(req.body);
+    if (!parsed.success) return res.status(400).json({ error: 'Text is required and must be under 50,000 characters.' });
+    const { text } = parsed.data;
     
     try {
       const result = await grammarCheck(text);
